@@ -1,0 +1,23 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.env
+venv/
+env/
+
+# Uploads (don't commit user images)
+uploads/
+
+# Spring Boot (don't upload this folder)
+springboot/
+
+# Temp files
+tempCodeRunnerFile.py
+
+# VS Code
+.vscode/
+
+# OS
+.DS_Store
+Thumbs.db

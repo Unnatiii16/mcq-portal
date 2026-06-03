@@ -1,0 +1,316 @@
+{
+  "course": {
+    "name": "testing",
+    "code": "",
+    "subject": "gk",
+    "difficulty": "medium",
+    "marks": 1,
+    "description": ""
+  },
+  "skills": [
+    {
+      "name": "basics",
+      "description": "basic testing questions",
+      "id": 1
+    },
+    {
+      "name": "CURRENT AFFAIRS",
+      "description": "KNOWLEDGE OF EVENTS",
+      "id": 2
+    }
+  ],
+  "lessons": [
+    {
+      "sl_no": "1",
+      "name": "1",
+      "summary": "chapter 1",
+      "id": 1
+    },
+    {
+      "sl_no": "1",
+      "name": "LESSON 1",
+      "summary": "TESTING",
+      "id": 2
+    }
+  ],
+  "question_sets": [
+    {
+      "name": "practice test 1",
+      "type": "practice",
+      "difficulty": "easy",
+      "marks": 1,
+      "lesson_id": 1,
+      "skill_id": 1,
+      "questions": [
+        {
+          "id": 1,
+          "question_type": "multiple_choice",
+          "translations": {
+            "en": {
+              "question": "In June 2025, the United States conducted air strikes on Iranian nuclear sites under which operation name?",
+              "options": {
+                "A": "Operation Desert Storm",
+                "B": "Operation Freedom Shield",
+                "C": "Operation Midnight Hammer",
+                "D": ""
+              },
+              "explanation": "",
+              "translated": false
+            },
+            "hi": {
+              "question": "जून 2025 में, संयुक्त राज्य अमेरिका ने किस ऑपरेशन नाम के तहत ईरानी परमाणु स्थलों पर हवाई हमले किए?",
+              "options": {
+                "A": "ऑपरेशन डेजर्ट स्टॉर्म",
+                "B": "ऑपरेशन फ्रीडम शील्ड",
+                "C": "ऑपरेशन मिडनाइट हैमर",
+                "D": ""
+              },
+              "explanation": "",
+              "translated": false
+            }
+          },
+          "correct_answer": "",
+          "difficulty": "easy",
+          "marks": 1,
+          "subject": "gk"
+        },
+        {
+          "id": 2,
+          "question_type": "multiple_choice",
+          "translations": {
+            "en": {
+              "question": "Who is the president of the European commission ?",
+              "options": {
+                "A": "Antonio Guterres",
+                "B": "Ursula Von Der leyen",
+                "C": "Roberta Metsola",
+                "D": "Antonio Costa"
+              },
+              "explanation": "",
+              "translated": false
+            },
+            "hi": {
+              "question": "यूरोपीय आयोग के अध्यक्ष कौन हैं?",
+              "options": {
+                "A": "एंटोनियो गुटेरेस",
+                "B": "उर्सुला वॉन डेर लेयेन",
+                "C": "रोबर्टा मेट्सोला",
+                "D": "एंटोनियो कोस्टा"
+              },
+              "explanation": "",
+              "translated": true
+            }
+          },
+          "correct_answer": "",
+          "difficulty": "easy",
+          "marks": 1,
+          "subject": "gk"
+        },
+        {
+          "id": 3,
+          "question_type": "multiple_choice",
+          "translations": {
+            "en": {
+              "question": "Which of the following are not the 4 Vs of Big Data ?",
+              "options": {
+                "A": "Velocity",
+                "B": "Volume",
+                "C": "Variety",
+                "D": "Verification"
+              },
+              "explanation": "",
+              "translated": false
+            },
+            "hi": {
+              "question": "निम्नलिखित में से कौन-सा बिग डेटा के ४ में शामिल नहीं है?",
+              "options": {
+                "A": "वेग",
+                "B": "आयतन",
+                "C": "सत्यापन",
+                "D": ""
+              },
+              "explanation": "",
+              "translated": false
+            }
+          },
+          "correct_answer": "",
+          "difficulty": "easy",
+          "marks": 1,
+          "subject": "gk"
+        },
+        {
+          "id": 4,
+          "question_type": "multiple_choice",
+          "translations": {
+            "en": {
+              "question": "— Which of the following is a variety of finger millet ?",
+              "options": {
+                "A": "UPAS 120",
+                "B": "BBM-1",
+                "C": "A404",
+                "D": ""
+              },
+              "explanation": "",
+              "translated": false
+            },
+            "hi": {
+              "question": "निम्नलिखित में से कौन मड़ुआ का एक किस्म है? उुि णिन",
+              "options": {
+                "A": "पूसा विशाल",
+                "B": "न-१",
+                "C": "",
+                "D": ""
+              },
+              "explanation": "",
+              "translated": false
+            }
+          },
+          "correct_answer": "",
+          "difficulty": "easy",
+          "marks": 1,
+          "subject": "gk"
+        }
+      ],
+      "id": 1
+    },
+    {
+      "name": "practice test 1",
+      "type": "practice",
+      "difficulty": "easy",
+      "marks": 1,
+      "lesson_id": 2,
+      "skill_id": 2,
+      "questions": [
+        {
+          "id": 1,
+          "question_type": "multiple_choice",
+          "translations": {
+            "en": {
+              "question": "In June 2025 , the united states carried out airstrikes on Iranian nuclear sites under what operation name ?",
+              "options": {
+                "A": "Operation Desert storm",
+                "B": "Operation Freedom shield",
+                "C": "Operation Midnight Hammer",
+                "D": ""
+              },
+              "explanation": "",
+              "translated": false
+            },
+            "hi": {
+              "question": "जून में अमेरिका ने ईरानी परमाणु स्थलों पर हवाई हमले किस ऑपरेशन नाम के तहत किए थे?",
+              "options": {
+                "A": "ऑपरेशन डेजर्ट स्टार्म",
+                "B": "ऑपरेशन फ्रीडम शील्ड",
+                "C": "ऑपरेशन मिडनाइट हैमर",
+                "D": ""
+              },
+              "explanation": "",
+              "translated": false
+            }
+          },
+          "correct_answer": "",
+          "difficulty": "easy",
+          "marks": 1,
+          "subject": "gk"
+        },
+        {
+          "id": 2,
+          "question_type": "multiple_choice",
+          "translations": {
+            "en": {
+              "question": "Who is the president of the European commission ?",
+              "options": {
+                "A": "Antonio Guterres",
+                "B": "Ursula Von Der leyen",
+                "C": "Roberta Metsola",
+                "D": "Antonio Costa"
+              },
+              "explanation": "",
+              "translated": false
+            },
+            "hi": {
+              "question": "यूरोपीय आयोग के अध्यक्ष कौन हैं?",
+              "options": {
+                "A": "एंटोनियो गुटेरेस",
+                "B": "उर्सुला वॉन डेर लेयेन",
+                "C": "रोबर्टा मेट्सोला",
+                "D": "एंटोनियो कोस्टा"
+              },
+              "explanation": "",
+              "translated": true
+            }
+          },
+          "correct_answer": "",
+          "difficulty": "easy",
+          "marks": 1,
+          "subject": "gk"
+        },
+        {
+          "id": 3,
+          "question_type": "multiple_choice",
+          "translations": {
+            "en": {
+              "question": "Which of the following are not the 4 Vs of Big Data ?",
+              "options": {
+                "A": "Velocity",
+                "B": "Volume",
+                "C": "Variety",
+                "D": "Verification"
+              },
+              "explanation": "",
+              "translated": false
+            },
+            "hi": {
+              "question": "निम्नलिखित में से कौन-सा बिग डेटा के ४ में शामिल नहीं है?",
+              "options": {
+                "A": "वेग",
+                "B": "आयतन",
+                "C": "सत्यापन",
+                "D": ""
+              },
+              "explanation": "",
+              "translated": false
+            }
+          },
+          "correct_answer": "",
+          "difficulty": "easy",
+          "marks": 1,
+          "subject": "gk"
+        },
+        {
+          "id": 4,
+          "question_type": "multiple_choice",
+          "translations": {
+            "en": {
+              "question": "— Which of the following is a variety of finger millet ?",
+              "options": {
+                "A": "UPAS 120",
+                "B": "BBM-1",
+                "C": "A404",
+                "D": ""
+              },
+              "explanation": "",
+              "translated": false
+            },
+            "hi": {
+              "question": "निम्नलिखित में से कौन मड़ुआ का एक किस्म है? उुि णिन",
+              "options": {
+                "A": "पूसा विशाल",
+                "B": "न-१",
+                "C": "",
+                "D": ""
+              },
+              "explanation": "",
+              "translated": false
+            }
+          },
+          "correct_answer": "",
+          "difficulty": "easy",
+          "marks": 1,
+          "subject": "gk"
+        }
+      ],
+      "id": 2
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+flask
+pytesseract
+pillow
+spacy
+langdetect
+indic-nlp-library
+deep-translator
+gunicorn
