@@ -8,21 +8,19 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet"/>
   <style>
     body { background:#f4f6fb; }
-    .topnav { background:#1e1b4b; height:60px; position:fixed; top:0; left:0; right:0; z-index:200; display:flex; align-items:center; padding:0 1.5rem; }
-    .topnav .brand { color:#fff; font-size:1.1rem; font-weight:700; text-decoration:none; }
-    .topnav .brand span { background:#7c3aed; padding:3px 10px; border-radius:6px; margin-right:10px; }
+    .topnav { background:#1e1b4b; height:60px; position:fixed; top:0; left:0; right:0; z-index:200; display:flex; align-items:center; padding:0 1.5rem; gap:1rem; }
+    .topnav .brand { color:#fff; font-size:1.1rem; font-weight:700; }
+    .topnav .brand span { background:#7c3aed; padding:3px 10px; border-radius:6px; margin-right:8px; }
     .sidebar { min-height:100vh; background:#1e1b4b; width:220px; position:fixed; top:0; left:0; z-index:100; padding-top:70px; }
-    .sidebar .nav-link { color:#c4b5fd; padding:10px 20px; font-size:0.88rem; border-left:3px solid transparent; }
+    .sidebar .nav-link { color:#c4b5fd; padding:10px 20px; font-size:0.88rem; border-left:3px solid transparent; cursor:pointer; }
     .sidebar .nav-link:hover { color:#fff; background:rgba(255,255,255,0.08); }
     .sidebar .nav-link.active { color:#fff; background:rgba(255,255,255,0.12); border-left-color:#a78bfa; }
     .main-content { margin-left:220px; padding:80px 1.5rem 2rem; }
     .card { border:none; border-radius:12px; box-shadow:0 1px 8px rgba(0,0,0,0.07); }
-    .card-header-purple { background:#7c3aed; color:#fff; border-radius:12px 12px 0 0 !important; padding:0.85rem 1.25rem; font-weight:600; }
-    .step-wizard { background:#fff; border-radius:10px; padding:1rem 1.5rem; margin-bottom:1.5rem; box-shadow:0 1px 4px rgba(0,0,0,0.06); }
-    .step-item { display:flex; align-items:center; gap:8px; font-size:0.78rem; color:#9ca3af; padding:5px 12px; border-radius:99px; }
-    .step-item.active { background:#7c3aed; color:#fff; font-weight:600; }
-    .step-item.done { background:#dcfce7; color:#16a34a; font-weight:600; }
-    .upload-zone { border:2px dashed #d1d5db; border-radius:10px; padding:2.5rem; text-align:center; cursor:pointer; transition:all 0.2s; background:#fafafa; }
+    .card-header-purple { background:#7c3aed; color:#fff; border-radius:12px 12px 0 0 !important; padding:0.85rem 1.25rem; font-weight:600; display:flex; justify-content:space-between; align-items:center; }
+    .section { display:none; }
+    .section.active { display:block; }
+    .upload-zone { border:2px dashed #d1d5db; border-radius:10px; padding:2rem; text-align:center; cursor:pointer; transition:all 0.2s; background:#fafafa; }
     .upload-zone:hover { border-color:#7c3aed; background:#faf5ff; }
     .q-editor { border:1px solid #e5e7eb; border-radius:10px; margin-bottom:1rem; overflow:hidden; }
     .q-editor-head { background:#f9fafb; padding:10px 14px; border-bottom:1px solid #e5e7eb; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; }
@@ -39,41 +37,103 @@
     .opt-quiz-btn.correct .opt-circle { background:#16a34a; border-color:#16a34a; color:#fff; }
     .opt-quiz-btn.wrong .opt-circle { background:#dc2626; border-color:#dc2626; color:#fff; }
     .hi-font { font-family:'Noto Sans Devanagari','Mangal',sans-serif; }
+    .translated-badge { background:#fff3cd; color:#856404; border:1px solid #ffc107; font-size:0.7rem; padding:2px 8px; border-radius:99px; font-weight:600; }
+    .meta-badge { background:#e0e7ff; color:#3730a3; font-size:0.7rem; padding:2px 8px; border-radius:99px; font-weight:500; }
+    .course-card { border:1px solid #e5e7eb; border-radius:12px; padding:1.25rem; margin-bottom:1rem; background:#fff; cursor:pointer; transition:all 0.2s; }
+    .course-card:hover { border-color:#7c3aed; box-shadow:0 4px 12px rgba(124,58,237,0.1); }
+    .set-card { border:1px solid #e5e7eb; border-radius:10px; padding:1rem 1.25rem; margin-bottom:0.75rem; background:#fff; }
+    .set-card:hover { border-color:#7c3aed; background:#faf5ff; }
+    .step-wizard { background:#fff; border-radius:10px; padding:0.75rem 1.5rem; margin-bottom:1.5rem; box-shadow:0 1px 4px rgba(0,0,0,0.06); }
+    .step-item { display:inline-flex; align-items:center; gap:6px; font-size:0.75rem; color:#9ca3af; padding:4px 10px; border-radius:99px; }
+    .step-item.active { background:#7c3aed; color:#fff; font-weight:600; }
+    .step-item.done { background:#dcfce7; color:#16a34a; font-weight:600; }
+    .stat-card { background:#fff; border-radius:10px; padding:1rem; text-align:center; box-shadow:0 1px 4px rgba(0,0,0,0.06); }
+    .stat-num { font-size:1.8rem; font-weight:700; color:#7c3aed; }
+    .req { color:#dc2626; }
     .score-box { background:#faf5ff; border:1px solid #e9d5ff; border-radius:12px; padding:2rem; text-align:center; }
     .score-num { font-size:3rem; font-weight:700; color:#7c3aed; }
-    .section { display:none; }
-    .section.active { display:block; }
-    .stat-card { background:#fff; border-radius:10px; padding:1.2rem; text-align:center; box-shadow:0 1px 4px rgba(0,0,0,0.06); }
-    .stat-num { font-size:2rem; font-weight:700; color:#7c3aed; }
-    .req { color:#dc2626; }
-    .translated-badge { background:#fff3cd; color:#856404; border:1px solid #ffc107; font-size:0.7rem; padding:2px 8px; border-radius:99px; font-weight:600; }
-    .set-card { border:1px solid #e5e7eb; border-radius:10px; padding:1rem 1.25rem; margin-bottom:0.75rem; background:#fff; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; }
-    .set-card:hover { border-color:#7c3aed; background:#faf5ff; }
+
+    /* Login page */
+    .login-wrap { min-height:100vh; display:flex; align-items:center; justify-content:center; background:linear-gradient(135deg,#1e1b4b,#7c3aed); }
+    .login-card { background:#fff; border-radius:16px; padding:2.5rem; width:100%; max-width:420px; box-shadow:0 20px 60px rgba(0,0,0,0.3); }
+    .login-logo { text-align:center; margin-bottom:1.5rem; }
+    .login-logo .badge { background:#7c3aed; font-size:1rem; padding:8px 18px; border-radius:8px; }
   </style>
 </head>
 <body>
 
+<div id="page-login" class="login-wrap">
+  <div class="login-card">
+    <div class="login-logo">
+      <span class="badge text-white mb-2">LMS</span>
+      <h4 class="fw-bold text-dark">MCQ Portal</h4>
+      <p class="text-muted small">Sign in to continue</p>
+    </div>
+    <div id="login-alert"></div>
+    <div id="login-form">
+      <div class="mb-3">
+        <label class="form-label fw-semibold small">Username</label>
+        <input type="text" class="form-control" id="login-username" placeholder="Enter username">
+      </div>
+      <div class="mb-3">
+        <label class="form-label fw-semibold small">Password</label>
+        <input type="password" class="form-control" id="login-password" placeholder="Enter password">
+      </div>
+      <button class="btn w-100 text-white mb-3" style="background:#7c3aed;" onclick="doLogin()">
+        <i class="bi bi-box-arrow-in-right me-2"></i>Sign In
+      </button>
+      <div class="text-center">
+        <span class="text-muted small">Don't have an account? </span>
+        <a class="small fw-semibold" style="color:#7c3aed;cursor:pointer;" onclick="showRegister()">Register</a>
+      </div>
+    </div>
+    <div id="register-form" style="display:none;">
+      <div class="mb-3">
+        <label class="form-label fw-semibold small">Full Name</label>
+        <input type="text" class="form-control" id="reg-name" placeholder="e.g. Priya Sharma">
+      </div>
+      <div class="mb-3">
+        <label class="form-label fw-semibold small">Username</label>
+        <input type="text" class="form-control" id="reg-username" placeholder="Choose a username">
+      </div>
+      <div class="mb-3">
+        <label class="form-label fw-semibold small">Password</label>
+        <input type="password" class="form-control" id="reg-password" placeholder="Choose a password">
+      </div>
+      <button class="btn w-100 text-white mb-3" style="background:#7c3aed;" onclick="doRegister()">
+        <i class="bi bi-person-plus me-2"></i>Register
+      </button>
+      <div class="text-center">
+        <a class="small fw-semibold" style="color:#7c3aed;cursor:pointer;" onclick="showLogin()">← Back to Sign In</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="page-app" style="display:none;">
+
 <nav class="topnav">
-  <a class="brand"><span>LMS</span> MCQ Portal</a>
-  <div class="ms-auto d-flex gap-3">
-    <span class="text-white-50 small">Learner's Menu</span>
-    <span class="text-white-50 small">Courses</span>
-    <span class="text-white-50 small">Instructor's Menu</span>
-    <span class="text-white-50 small">Reports</span>
+  <div class="brand"><span>LMS</span> MCQ Portal</div>
+  <div class="ms-auto d-flex align-items-center gap-3">
+    <span class="text-white-50 small d-none d-md-inline">Learner's Menu</span>
+    <span class="text-white-50 small d-none d-md-inline">Courses</span>
+    <span class="text-white-50 small d-none d-md-inline">Reports</span>
+    <div class="d-flex align-items-center gap-2">
+      <span class="badge bg-success rounded-pill" id="nav-user-name"></span>
+      <button class="btn btn-sm btn-outline-light" onclick="doLogout()"><i class="bi bi-box-arrow-right"></i></button>
+    </div>
   </div>
 </nav>
 
 <div class="sidebar">
-  <ul class="nav flex-column">
-    <li><a class="nav-link active" id="sb-1" onclick="goStep(1)"><i class="bi bi-clipboard-data me-2"></i>Basic Detail</a></li>
-    <li><a class="nav-link" id="sb-2" onclick="goStep(2)"><i class="bi bi-star me-2"></i>Skills</a></li>
-    <li><a class="nav-link" id="sb-3" onclick="goStep(3)"><i class="bi bi-book me-2"></i>Lessons</a></li>
-    <li><a class="nav-link" id="sb-4" onclick="goStep(4)"><i class="bi bi-folder2-open me-2"></i>Question Sets</a></li>
-    <li><a class="nav-link" id="sb-5" onclick="goStep(5)"><i class="bi bi-camera me-2"></i>Upload Image</a></li>
-    <li><a class="nav-link" id="sb-6" onclick="goStep(6)"><i class="bi bi-pencil-square me-2"></i>Review</a></li>
-    <li><a class="nav-link" id="sb-7" onclick="goStep(7)"><i class="bi bi-check-circle me-2"></i>Saved Sets</a></li>
+  <ul class="nav flex-column" id="sidebar-nav">
+    <li><a class="nav-link active" id="sb-courses" onclick="showSection('courses')"><i class="bi bi-grid me-2"></i>All Courses</a></li>
+    <li><a class="nav-link" id="sb-course-detail" onclick="showSection('course-detail')" style="display:none"><i class="bi bi-clipboard-data me-2"></i>Course Detail</a></li>
+    <li><a class="nav-link" id="sb-skills" onclick="showSection('skills')" style="display:none"><i class="bi bi-star me-2"></i>Skills</a></li>
+    <li><a class="nav-link" id="sb-lessons" onclick="showSection('lessons')" style="display:none"><i class="bi bi-book me-2"></i>Lessons</a></li>
+    <li><a class="nav-link" id="sb-qsets" onclick="showSection('qsets')" style="display:none"><i class="bi bi-folder2-open me-2"></i>Question Sets</a></li>
     <li class="mt-3 border-top border-secondary pt-3">
-      <a class="nav-link" onclick="goStep('quiz')"><i class="bi bi-play-circle me-2"></i>Take Quiz</a>
+      <a class="nav-link" id="sb-new-course" onclick="showSection('new-course')"><i class="bi bi-plus-circle me-2"></i>New Course</a>
     </li>
   </ul>
 </div>
@@ -82,224 +142,277 @@
 
   <div class="card mb-3 p-3 d-flex flex-row justify-content-between align-items-center">
     <div>
-      <h5 class="mb-0 fw-semibold text-dark" id="page-title">Manage Course Content</h5>
-      <small class="text-muted" id="page-breadcrumb">Home › Courses › New Course</small>
+      <h5 class="mb-0 fw-semibold text-dark" id="page-title">All Courses</h5>
+      <small class="text-muted" id="page-breadcrumb">Home › Courses</small>
     </div>
-    <span id="course-tag" class="badge fw-semibold" style="background:#7c3aed;font-size:0.85rem;padding:6px 14px;border-radius:99px;"></span>
+    <span id="course-tag" class="badge fw-semibold" style="background:#7c3aed;font-size:0.82rem;padding:5px 12px;border-radius:99px;display:none;"></span>
   </div>
 
-  <div class="step-wizard d-flex align-items-center gap-1 flex-wrap mb-3">
-    <div class="step-item active" id="stp-1"><span class="badge bg-secondary rounded-circle me-1">1</span>Basic Detail</div>
-    <i class="bi bi-chevron-right text-muted"></i>
-    <div class="step-item" id="stp-2"><span class="badge bg-secondary rounded-circle me-1">2</span>Skills</div>
-    <i class="bi bi-chevron-right text-muted"></i>
-    <div class="step-item" id="stp-3"><span class="badge bg-secondary rounded-circle me-1">3</span>Lessons</div>
-    <i class="bi bi-chevron-right text-muted"></i>
-    <div class="step-item" id="stp-4"><span class="badge bg-secondary rounded-circle me-1">4</span>Question Set</div>
-    <i class="bi bi-chevron-right text-muted"></i>
-    <div class="step-item" id="stp-5"><span class="badge bg-secondary rounded-circle me-1">5</span>Upload</div>
-    <i class="bi bi-chevron-right text-muted"></i>
-    <div class="step-item" id="stp-6"><span class="badge bg-secondary rounded-circle me-1">6</span>Review</div>
-    <i class="bi bi-chevron-right text-muted"></i>
-    <div class="step-item" id="stp-7"><span class="badge bg-secondary rounded-circle me-1">7</span>Saved</div>
+  <div class="section active" id="sec-courses">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h6 class="fw-semibold mb-0">All Courses</h6>
+      <button class="btn btn-sm text-white" style="background:#7c3aed;" onclick="showSection('new-course')">
+        <i class="bi bi-plus-lg me-1"></i> New Course
+      </button>
+    </div>
+    <div id="courses-list"><p class="text-muted">No courses yet. Create one!</p></div>
   </div>
 
-  <div class="section active" id="sec-1">
+  <div class="section" id="sec-new-course">
     <div class="card">
-      <div class="card-header-purple d-flex justify-content-between align-items-center">
-        <span><i class="bi bi-clipboard-data me-2"></i>Basic Detail</span>
-        <small class="opacity-75">Course Information</small>
+      <div class="card-header-purple">
+        <span><i class="bi bi-clipboard-data me-2"></i>Create New Course</span>
       </div>
       <div class="card-body p-4">
         <p class="text-end text-danger small mb-3">● Indicates Required Fields</p>
         <div class="row g-3">
-          <div class="col-md-6"><label class="form-label fw-semibold">Course Name <span class="req">●</span></label><input type="text" class="form-control" id="course-name" placeholder="e.g. General Knowledge 2025"></div>
-          <div class="col-md-6"><label class="form-label fw-semibold">Course Code</label><input type="text" class="form-control" id="course-code" placeholder="e.g. GK-2025"></div>
-          <div class="col-md-4"><label class="form-label fw-semibold">Subject <span class="req">●</span></label><input type="text" class="form-control" id="course-subject" placeholder="e.g. General Knowledge"></div>
-          <div class="col-md-4"><label class="form-label fw-semibold">Difficulty <span class="req">●</span></label>
-            <select class="form-select" id="course-difficulty">
+          <div class="col-md-6"><label class="form-label fw-semibold small">Course Name <span class="req">●</span></label><input type="text" class="form-control" id="nc-name" placeholder="e.g. General Knowledge 2025"></div>
+          <div class="col-md-6"><label class="form-label fw-semibold small">Course Code</label><input type="text" class="form-control" id="nc-code" placeholder="e.g. GK-2025"></div>
+          <div class="col-md-4"><label class="form-label fw-semibold small">Subject <span class="req">●</span></label><input type="text" class="form-control" id="nc-subject" placeholder="e.g. General Knowledge"></div>
+          <div class="col-md-4"><label class="form-label fw-semibold small">Difficulty <span class="req">●</span></label>
+            <select class="form-select" id="nc-difficulty">
               <option value="">Not Selected</option>
               <option value="easy">Easy</option>
               <option value="medium" selected>Medium</option>
               <option value="hard">Hard</option>
             </select>
           </div>
-          <div class="col-md-4"><label class="form-label fw-semibold">Marks per Question</label><input type="number" class="form-control" id="course-marks" value="1" min="1"></div>
-          <div class="col-12"><label class="form-label fw-semibold">Description</label><textarea class="form-control" id="course-desc" rows="2" placeholder="Optional..."></textarea></div>
+          <div class="col-md-4"><label class="form-label fw-semibold small">Marks per Question</label><input type="number" class="form-control" id="nc-marks" value="1" min="1"></div>
+          <div class="col-12"><label class="form-label fw-semibold small">Description</label><textarea class="form-control" id="nc-desc" rows="2" placeholder="Optional..."></textarea></div>
         </div>
       </div>
       <div class="card-footer bg-white d-flex justify-content-end gap-2 p-3">
-        <button class="btn btn-outline-secondary" onclick="resetAll()">Reset</button>
-        <button class="btn text-white" style="background:#7c3aed;" onclick="saveCourse()">Save & Next <i class="bi bi-arrow-right"></i></button>
+        <button class="btn btn-outline-secondary" onclick="showSection('courses')">Cancel</button>
+        <button class="btn text-white" style="background:#7c3aed;" onclick="createCourse()">Create Course <i class="bi bi-arrow-right"></i></button>
       </div>
     </div>
   </div>
 
-  <div class="section" id="sec-2">
+  <div class="section" id="sec-course-detail">
+    <div class="row g-3 mb-3">
+      <div class="col-md-3"><div class="stat-card"><div class="stat-num" id="cd-skills-count">0</div><div class="text-muted small">Skills</div></div></div>
+      <div class="col-md-3"><div class="stat-card"><div class="stat-num" id="cd-lessons-count">0</div><div class="text-muted small">Lessons</div></div></div>
+      <div class="col-md-3"><div class="stat-card"><div class="stat-num" id="cd-sets-count">0</div><div class="text-muted small">Question Sets</div></div></div>
+      <div class="col-md-3"><div class="stat-card"><div class="stat-num" id="cd-q-count">0</div><div class="text-muted small">Total Questions</div></div></div>
+    </div>
     <div class="card mb-3">
-      <div class="card-header-purple"><i class="bi bi-star me-2"></i>Add Skill</div>
+      <div class="card-header-purple">
+        <span><i class="bi bi-info-circle me-2"></i>Course Details</span>
+        <button class="btn btn-sm btn-light" onclick="editCourse()"><i class="bi bi-pencil me-1"></i>Edit</button>
+      </div>
+      <div class="card-body p-4" id="course-detail-body"></div>
+    </div>
+    <div class="card">
+      <div class="card-header-purple">
+        <span><i class="bi bi-collection me-2"></i>All Question Sets</span>
+        <button class="btn btn-sm btn-light" onclick="showSection('qsets')"><i class="bi bi-plus-lg me-1"></i>New Set</button>
+      </div>
+      <div class="card-body p-3" id="course-sets-list"></div>
+    </div>
+  </div>
+
+  <div class="section" id="sec-skills">
+    <div class="card mb-3">
+      <div class="card-header-purple"><span><i class="bi bi-star me-2"></i>Add Skill</span></div>
       <div class="card-body p-4">
         <div class="row g-3">
-          <div class="col-md-5"><label class="form-label fw-semibold">Skill Name <span class="req">●</span></label><input type="text" class="form-control" id="skill-name" placeholder="e.g. Current Affairs"></div>
-          <div class="col-md-7"><label class="form-label fw-semibold">Description <span class="req">●</span></label><input type="text" class="form-control" id="skill-desc" placeholder="e.g. Knowledge of recent events"></div>
+          <div class="col-md-5"><label class="form-label fw-semibold small">Skill Name <span class="req">●</span></label><input type="text" class="form-control" id="skill-name" placeholder="e.g. Current Affairs"></div>
+          <div class="col-md-7"><label class="form-label fw-semibold small">Description <span class="req">●</span></label><input type="text" class="form-control" id="skill-desc" placeholder="e.g. Knowledge of recent events"></div>
         </div>
       </div>
       <div class="card-footer bg-white d-flex justify-content-end gap-2 p-3">
-        <button class="btn btn-outline-secondary" onclick="goStep(1)">Back</button>
         <button class="btn btn-outline-secondary" onclick="addSkill()"><i class="bi bi-plus-lg"></i> Add Skill</button>
-        <button class="btn text-white" style="background:#7c3aed;" onclick="goStep(3)">Next <i class="bi bi-arrow-right"></i></button>
+        <button class="btn text-white" style="background:#7c3aed;" onclick="showSection('lessons')">Next: Lessons <i class="bi bi-arrow-right"></i></button>
       </div>
     </div>
     <div class="card">
-      <div class="card-header-purple"><i class="bi bi-list-ul me-2"></i>Added Skills</div>
-      <div class="card-body p-3">
-        <div id="skills-list"><p class="text-muted small">No skills added yet.</p></div>
-      </div>
+      <div class="card-header-purple"><span><i class="bi bi-list-ul me-2"></i>Added Skills</span></div>
+      <div class="card-body p-3"><div id="skills-list"><p class="text-muted small">No skills added yet.</p></div></div>
     </div>
   </div>
 
-  <div class="section" id="sec-3">
+  <div class="section" id="sec-lessons">
     <div class="card mb-3">
-      <div class="card-header-purple"><i class="bi bi-book me-2"></i>Add Lesson</div>
+      <div class="card-header-purple"><span><i class="bi bi-book me-2"></i>Add Lesson</span></div>
       <div class="card-body p-4">
         <div class="row g-3">
-          <div class="col-md-2"><label class="form-label fw-semibold">Sl. No <span class="req">●</span></label><input type="number" class="form-control" id="lesson-slno" value="1" min="1"></div>
-          <div class="col-md-4"><label class="form-label fw-semibold">Lesson Name <span class="req">●</span></label><input type="text" class="form-control" id="lesson-name" placeholder="e.g. Lesson 1"></div>
-          <div class="col-md-6"><label class="form-label fw-semibold">Summary <span class="req">●</span></label><input type="text" class="form-control" id="lesson-summary" placeholder="Brief summary..."></div>
+          <div class="col-md-2"><label class="form-label fw-semibold small">Sl. No <span class="req">●</span></label><input type="number" class="form-control" id="lesson-slno" value="1" min="1"></div>
+          <div class="col-md-4"><label class="form-label fw-semibold small">Lesson Name <span class="req">●</span></label><input type="text" class="form-control" id="lesson-name" placeholder="e.g. Lesson 1"></div>
+          <div class="col-md-6"><label class="form-label fw-semibold small">Summary <span class="req">●</span></label><input type="text" class="form-control" id="lesson-summary" placeholder="Brief summary..."></div>
         </div>
       </div>
       <div class="card-footer bg-white d-flex justify-content-end gap-2 p-3">
-        <button class="btn btn-outline-secondary" onclick="goStep(2)">Back</button>
         <button class="btn btn-outline-secondary" onclick="addLesson()"><i class="bi bi-plus-lg"></i> Add Lesson</button>
-        <button class="btn text-white" style="background:#7c3aed;" onclick="goStep(4)">Next <i class="bi bi-arrow-right"></i></button>
+        <button class="btn text-white" style="background:#7c3aed;" onclick="showSection('qsets')">Next: Question Sets <i class="bi bi-arrow-right"></i></button>
       </div>
     </div>
     <div class="card">
-      <div class="card-header-purple"><i class="bi bi-list-ul me-2"></i>Added Lessons</div>
-      <div class="card-body p-3">
-        <div id="lessons-list"><p class="text-muted small">No lessons added yet.</p></div>
-      </div>
+      <div class="card-header-purple"><span><i class="bi bi-list-ul me-2"></i>Added Lessons</span></div>
+      <div class="card-body p-3"><div id="lessons-list"><p class="text-muted small">No lessons added yet.</p></div></div>
     </div>
   </div>
 
-  <div class="section" id="sec-4">
-    <div class="card">
-      <div class="card-header-purple"><i class="bi bi-folder2-open me-2"></i>Question Set Details</div>
-      <div class="card-body p-4">
-        <p class="text-end text-danger small mb-3">● Indicates Required Fields</p>
-        <div class="row g-3">
-          <div class="col-md-6"><label class="form-label fw-semibold">Set Name <span class="req">●</span></label><input type="text" class="form-control" id="set-name" placeholder="e.g. Practice Set 1"></div>
-          <div class="col-md-6"><label class="form-label fw-semibold">Assessment Type <span class="req">●</span></label>
-            <select class="form-select" id="set-type">
-              <option value="">Not Selected</option>
-              <option value="practice">Practice</option>
-              <option value="exam">Exam</option>
-              <option value="quiz">Quiz</option>
-            </select>
-          </div>
-          <div class="col-md-4"><label class="form-label fw-semibold">Difficulty</label>
-            <select class="form-select" id="set-difficulty">
-              <option value="">Not Selected</option>
-              <option value="easy">Easy</option>
-              <option value="medium">Medium</option>
-              <option value="hard">Hard</option>
-            </select>
-          </div>
-          <div class="col-md-4"><label class="form-label fw-semibold">Marks per Question</label><input type="number" class="form-control" id="set-marks" value="1" min="1"></div>
-          <div class="col-md-4"><label class="form-label fw-semibold">Lesson <span class="req">●</span></label>
-            <select class="form-select" id="set-lesson">
-              <option value="">Select Lesson</option>
-            </select>
-          </div>
-          <div class="col-md-4"><label class="form-label fw-semibold">Skill</label>
-            <select class="form-select" id="set-skill">
-              <option value="">Select Skill</option>
-            </select>
+  <div class="section" id="sec-qsets">
+    <div class="step-wizard d-flex align-items-center gap-1 flex-wrap mb-3">
+      <div class="step-item active" id="stp-1">1 Set Details</div>
+      <i class="bi bi-chevron-right text-muted small"></i>
+      <div class="step-item" id="stp-2">2 Upload Files</div>
+      <i class="bi bi-chevron-right text-muted small"></i>
+      <div class="step-item" id="stp-3">3 Review</div>
+      <i class="bi bi-chevron-right text-muted small"></i>
+      <div class="step-item" id="stp-4">4 Saved</div>
+    </div>
+
+    <div id="qs-step-1">
+      <div class="card">
+        <div class="card-header-purple"><span><i class="bi bi-folder2-open me-2"></i>Question Set Details</span></div>
+        <div class="card-body p-4">
+          <div class="row g-3">
+            <div class="col-md-6"><label class="form-label fw-semibold small">Set Name <span class="req">●</span></label><input type="text" class="form-control" id="set-name" placeholder="e.g. Practice Set 1"></div>
+            <div class="col-md-6"><label class="form-label fw-semibold small">Assessment Type <span class="req">●</span></label>
+              <select class="form-select" id="set-type">
+                <option value="">Not Selected</option>
+                <option value="practice">Practice</option>
+                <option value="exam">Exam</option>
+                <option value="quiz">Quiz</option>
+              </select>
+            </div>
+            <div class="col-md-4"><label class="form-label fw-semibold small">Difficulty</label>
+              <select class="form-select" id="set-difficulty">
+                <option value="">Not Selected</option>
+                <option value="easy">Easy</option>
+                <option value="medium">Medium</option>
+                <option value="hard">Hard</option>
+              </select>
+            </div>
+            <div class="col-md-4"><label class="form-label fw-semibold small">Marks per Question</label><input type="number" class="form-control" id="set-marks" value="1" min="1"></div>
+            <div class="col-md-4"><label class="form-label fw-semibold small">Lesson</label>
+              <select class="form-select" id="set-lesson"><option value="">Select Lesson</option></select>
+            </div>
+            <div class="col-md-4"><label class="form-label fw-semibold small">Skill</label>
+              <select class="form-select" id="set-skill"><option value="">Select Skill</option></select>
+            </div>
           </div>
         </div>
-      </div>
-      <div class="card-footer bg-white d-flex justify-content-end gap-2 p-3">
-        <button class="btn btn-outline-secondary" onclick="goStep(3)">Back</button>
-        <button class="btn text-white" style="background:#7c3aed;" onclick="saveSet()">Save & Upload Image <i class="bi bi-arrow-right"></i></button>
-      </div>
-    </div>
-  </div>
-
-  <div class="section" id="sec-5">
-    <div class="card">
-      <div class="card-header-purple"><i class="bi bi-camera me-2"></i>Upload Question Paper Image</div>
-      <div class="card-body p-4">
-        <div id="set-info-strip" class="alert mb-3" style="background:#faf5ff;border:1px solid #e9d5ff;color:#6d28d9;font-size:0.85rem;"></div>
-        <div class="upload-zone" onclick="document.getElementById('file-input').click()" id="drop-zone">
-          <i class="bi bi-cloud-arrow-up" style="font-size:2.5rem;color:#7c3aed;"></i>
-          <p class="fw-semibold mt-2 mb-1">Click to upload or drag & drop</p>
-          <p class="text-muted small">JPG · PNG · WEBP</p>
+        <div class="card-footer bg-white d-flex justify-content-end gap-2 p-3">
+          <button class="btn btn-outline-secondary" onclick="showSection('course-detail')">Cancel</button>
+          <button class="btn text-white" style="background:#7c3aed;" onclick="goQsStep(2)">Next: Upload Files <i class="bi bi-arrow-right"></i></button>
         </div>
-        <input type="file" id="file-input" accept="image/*" style="display:none" onchange="previewImg(this)">
-        <img id="img-preview" style="display:none;max-width:100%;max-height:240px;border-radius:10px;margin-top:1rem;">
-        <div id="upload-status" class="mt-3"></div>
-      </div>
-      <div class="card-footer bg-white d-flex justify-content-end gap-2 p-3">
-        <button class="btn btn-outline-secondary" onclick="goStep(4)">Back</button>
-        <button class="btn text-white" style="background:#7c3aed;display:none;" id="extract-btn" onclick="extractQuestions()">
-          <i class="bi bi-search"></i> Extract & Translate
-        </button>
       </div>
     </div>
-  </div>
 
-  <div class="section" id="sec-6">
-    <div class="card">
-      <div class="card-header-purple d-flex justify-content-between align-items-center">
-        <span><i class="bi bi-pencil-square me-2"></i>Review & Correct Questions</span>
-        <span class="opacity-75 small" id="q-count-label"></span>
-      </div>
-      <div class="card-body p-4">
-        <div class="alert alert-info d-flex align-items-center gap-2 mb-3 small">
-          <i class="bi bi-info-circle-fill"></i>
-          Questions marked with <span class="translated-badge ms-1 me-1">Auto Translated</span> were automatically translated. You can edit them or re-translate manually.
+    <div id="qs-step-2" style="display:none;">
+      <div class="card">
+        <div class="card-header-purple"><span><i class="bi bi-cloud-upload me-2"></i>Upload Question Paper Files</span></div>
+        <div class="card-body p-4">
+          <div class="alert alert-info small mb-3">
+            <i class="bi bi-info-circle-fill me-2"></i>
+            You can upload <strong>multiple files</strong> at once. Supported formats: <strong>JPG, PNG, WEBP, PDF, DOCX</strong>
+          </div>
+          <div class="upload-zone" onclick="document.getElementById('file-input').click()" id="drop-zone">
+            <i class="bi bi-cloud-arrow-up" style="font-size:2.5rem;color:#7c3aed;"></i>
+            <p class="fw-semibold mt-2 mb-1">Click to upload or drag & drop</p>
+            <p class="text-muted small">JPG · PNG · WEBP · PDF · DOCX — Multiple files supported</p>
+          </div>
+          <input type="file" id="file-input" accept="image/*,.pdf,.doc,.docx" multiple style="display:none" onchange="previewFiles(this)">
+          <div id="file-preview-list" class="mt-3"></div>
+          <div id="upload-status" class="mt-3"></div>
         </div>
-        <div id="editor-container"></div>
+        <div class="card-footer bg-white d-flex justify-content-end gap-2 p-3">
+          <button class="btn btn-outline-secondary" onclick="goQsStep(1)">Back</button>
+          <button class="btn text-white" style="background:#7c3aed;" id="extract-btn" onclick="extractQuestions()" disabled>
+            <i class="bi bi-search me-1"></i>Extract & Translate
+          </button>
+        </div>
       </div>
-      <div class="card-footer bg-white d-flex justify-content-end gap-2 p-3">
-        <button class="btn btn-outline-secondary" onclick="goStep(5)">Re-upload</button>
-        <button class="btn btn-outline-secondary" onclick="resetAll()">Close</button>
-        <button class="btn btn-success" onclick="saveAll()"><i class="bi bi-save"></i> Save All Questions</button>
+    </div>
+
+    <div id="qs-step-3" style="display:none;">
+      <div class="card">
+        <div class="card-header-purple">
+          <span><i class="bi bi-pencil-square me-2"></i>Review & Correct Questions</span>
+          <span class="opacity-75 small" id="q-count-label"></span>
+        </div>
+        <div class="card-body p-4">
+          <div class="alert alert-info d-flex align-items-center gap-2 mb-3 small">
+            <i class="bi bi-info-circle-fill"></i>
+            Questions marked with <span class="translated-badge ms-1 me-1">Auto Translated</span> were automatically translated.
+          </div>
+          <div id="editor-container"></div>
+        </div>
+        <div class="card-footer bg-white d-flex justify-content-end gap-2 p-3">
+          <button class="btn btn-outline-secondary" onclick="goQsStep(2)">Re-upload</button>
+          <button class="btn btn-success" onclick="saveAll()"><i class="bi bi-save me-1"></i>Save All Questions</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="qs-step-4" style="display:none;">
+      <div class="card">
+        <div class="card-header-purple"><span><i class="bi bi-check-circle me-2"></i>Question Set Saved!</span></div>
+        <div class="card-body p-4 text-center">
+          <i class="bi bi-check-circle-fill text-success" style="font-size:3rem;"></i>
+          <h5 class="mt-3 fw-semibold">Questions saved successfully!</h5>
+          <p class="text-muted small" id="saved-summary"></p>
+        </div>
+        <div class="card-footer bg-white d-flex justify-content-center gap-2 p-3">
+          <button class="btn btn-outline-secondary" onclick="showSection('course-detail')">View Course</button>
+          <button class="btn text-white" style="background:#7c3aed;" onclick="goQsStep(1);resetSetForm()">Add Another Set</button>
+        </div>
       </div>
     </div>
   </div>
 
-  <div class="section" id="sec-7">
-    <div class="row g-3 mb-4">
-      <div class="col-md-4"><div class="stat-card"><div class="stat-num" id="sum-sets">0</div><div class="text-muted small">Question Sets</div></div></div>
-      <div class="col-md-4"><div class="stat-card"><div class="stat-num" id="sum-q">0</div><div class="text-muted small">Total Questions</div></div></div>
-      <div class="col-md-4"><div class="stat-card"><div class="stat-num" id="sum-m">0</div><div class="text-muted small">Total Marks</div></div></div>
-    </div>
-    <div class="card">
-      <div class="card-header-purple d-flex justify-content-between align-items-center">
-        <span><i class="bi bi-collection me-2"></i>Saved Question Sets</span>
-        <button class="btn btn-sm btn-light" onclick="goStep(4)"><i class="bi bi-plus-lg"></i> New Set</button>
-      </div>
-      <div class="card-body p-4">
-        <div id="saved-course-info" class="alert mb-3" style="background:#faf5ff;border:1px solid #e9d5ff;color:#6d28d9;font-size:0.85rem;"></div>
-        <div id="sets-list"></div>
-      </div>
-    </div>
-  </div>
-
-  <div class="section" id="sec-edit">
-    <div class="card">
-      <div class="card-header-purple d-flex justify-content-between align-items-center">
+  <div class="section" id="sec-edit-set">
+    <div class="card mb-3">
+      <div class="card-header-purple">
         <span><i class="bi bi-pencil me-2"></i>Edit Question Set</span>
-        <button class="btn btn-sm btn-light" onclick="goStep(7)"><i class="bi bi-x-lg"></i></button>
+        <button class="btn btn-sm btn-light" onclick="showSection('course-detail')"><i class="bi bi-x-lg"></i></button>
       </div>
       <div class="card-body p-4">
+        <div class="alert alert-warning small mb-3">
+          <i class="bi bi-exclamation-triangle-fill me-2"></i>
+          You can edit existing questions or upload more files to add new questions.
+        </div>
         <div id="edit-editor-container"></div>
+        <div class="card mt-3 border">
+          <div class="card-header bg-light fw-semibold small"><i class="bi bi-plus-circle me-2"></i>Add More Questions</div>
+          <div class="card-body p-3">
+            <div class="upload-zone" onclick="document.getElementById('add-file-input').click()" id="add-drop-zone">
+              <i class="bi bi-cloud-arrow-up" style="font-size:2rem;color:#7c3aed;"></i>
+              <p class="fw-semibold mt-2 mb-1 small">Upload more files</p>
+              <p class="text-muted small">JPG · PNG · WEBP · PDF · DOCX</p>
+            </div>
+            <input type="file" id="add-file-input" accept="image/*,.pdf,.doc,.docx" multiple style="display:none" onchange="previewAddFiles(this)">
+            <div id="add-file-preview" class="mt-2"></div>
+            <div id="add-upload-status" class="mt-2"></div>
+          </div>
+          <div class="card-footer bg-white d-flex justify-content-end gap-2 p-2">
+            <button class="btn btn-sm text-white" style="background:#7c3aed;" id="add-extract-btn" onclick="extractMoreQuestions()" disabled>
+              <i class="bi bi-search me-1"></i>Extract & Add
+            </button>
+          </div>
+        </div>
+        <div id="new-questions-editor" style="display:none;" class="mt-3">
+          <h6 class="fw-semibold mb-3 text-success"><i class="bi bi-plus-circle-fill me-2"></i>New Questions to Add</h6>
+          <div id="new-editor-container"></div>
+          <button class="btn btn-success btn-sm" onclick="appendNewQuestions()"><i class="bi bi-plus-lg me-1"></i>Add These Questions</button>
+        </div>
       </div>
       <div class="card-footer bg-white d-flex justify-content-end gap-2 p-3">
-        <button class="btn btn-outline-secondary" onclick="goStep(7)">Cancel</button>
-        <button class="btn btn-success" onclick="updateSet()"><i class="bi bi-save"></i> Update Questions</button>
+        <button class="btn btn-outline-secondary" onclick="showSection('course-detail')">Cancel</button>
+        <button class="btn btn-success" onclick="updateSet()"><i class="bi bi-save me-1"></i>Update Questions</button>
       </div>
+    </div>
+  </div>
+
+  <div class="section" id="sec-view-set">
+    <div class="card">
+      <div class="card-header-purple">
+        <span id="view-set-title"><i class="bi bi-eye me-2"></i>View Question Set</span>
+        <button class="btn btn-sm btn-light" onclick="showSection('course-detail')"><i class="bi bi-arrow-left me-1"></i>Back</button>
+      </div>
+      <div class="card-body p-4" id="view-set-body"></div>
     </div>
   </div>
 
@@ -316,15 +429,15 @@
         <div id="questions-container"></div>
       </div>
       <div class="card-footer bg-white d-flex justify-content-end gap-2 p-3">
-        <button class="btn btn-outline-secondary" onclick="goStep(7)">Back</button>
-        <button class="btn btn-success" onclick="submitQuiz()"><i class="bi bi-check-lg"></i> Submit Quiz</button>
+        <button class="btn btn-outline-secondary" onclick="showSection('course-detail')">Back</button>
+        <button class="btn btn-success" onclick="submitQuiz()"><i class="bi bi-check-lg me-1"></i>Submit Quiz</button>
       </div>
     </div>
   </div>
 
-  \<div class="section" id="sec-result">
+  <div class="section" id="sec-result">
     <div class="card">
-      <div class="card-header-purple"><i class="bi bi-trophy me-2"></i>Quiz Result</div>
+      <div class="card-header-purple"><span><i class="bi bi-trophy me-2"></i>Quiz Result</span></div>
       <div class="card-body p-4">
         <div class="score-box mb-4">
           <div class="score-num" id="score-display">—</div>
@@ -333,192 +446,536 @@
         <div id="review"></div>
       </div>
       <div class="card-footer bg-white d-flex justify-content-end gap-2 p-3">
-        <button class="btn btn-outline-secondary" onclick="goStep(7)">Back</button>
-        <button class="btn text-white" style="background:#7c3aed;" onclick="goStep('quiz')">Retry</button>
+        <button class="btn btn-outline-secondary" onclick="showSection('course-detail')">Back to Course</button>
       </div>
     </div>
   </div>
 
 </div>
+</div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-  let course={}, skills=[], lessons=[], currentSet={}, questions=[], editSetId=null, quizQuestions=[], userAnswers={};
-  const LABELS=["A","B","C","D"];
 
-  function goStep(n) {
-    const map={1:"sec-1",2:"sec-2",3:"sec-3",4:"sec-4",5:"sec-5",6:"sec-6",7:"sec-7","edit":"sec-edit","quiz":"sec-quiz","result":"sec-result"};
-    document.querySelectorAll(".section").forEach(s=>s.classList.remove("active"));
-    document.getElementById(map[n]||"sec-1").classList.add("active");
-    for(let i=1;i<=7;i++){
-      const el=document.getElementById("stp-"+i);
-      if(!el) continue;
-      el.classList.remove("active","done");
-      if(typeof n==="number"){
-        if(i<n) el.classList.add("done");
-        if(i===n) el.classList.add("active");
-      }
+ let currentUser = null;
+  let currentCourse = null;
+  let currentSet = {};
+  let questions = [];
+  let editSetId = null;
+  let editSetQuestions = [];
+  let newExtractedQuestions = [];
+  let quizQuestions = [];
+  let userAnswers = {};
+  const LABELS = ["A","B","C","D"];
+
+  function showRegister() {
+    document.getElementById("login-form").style.display = "none";
+    document.getElementById("register-form").style.display = "block";
+    document.getElementById("login-alert").innerHTML = "";
+  }
+
+  function showLogin() {
+    document.getElementById("register-form").style.display = "none";
+    document.getElementById("login-form").style.display = "block";
+    document.getElementById("login-alert").innerHTML = "";
+  }
+
+  async function doLogin() {
+    const username = document.getElementById("login-username").value.trim();
+    const password = document.getElementById("login-password").value.trim();
+    if (!username || !password) { showAlert("login-alert", "Please fill all fields", "danger"); return; }
+
+    const res = await fetch("/api/login", {method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify({username, password})});
+    const data = await res.json();
+
+    if (data.error) { showAlert("login-alert", data.error, "danger"); return; }
+
+    currentUser = data.user;
+    document.getElementById("nav-user-name").textContent = "👤 " + currentUser.name;
+    document.getElementById("page-login").style.display = "none";
+    document.getElementById("page-app").style.display = "block";
+    loadCourses();
+  }
+
+  async function doRegister() {
+    const name     = document.getElementById("reg-name").value.trim();
+    const username = document.getElementById("reg-username").value.trim();
+    const password = document.getElementById("reg-password").value.trim();
+    if (!name || !username || !password) { 
+        showAlert("login-alert", "Please fill all fields", "danger"); 
+        return; 
     }
-    const sbMap={1:"sb-1",2:"sb-2",3:"sb-3",4:"sb-4",5:"sb-5",6:"sb-6",7:"sb-7"};
-    document.querySelectorAll(".sidebar .nav-link").forEach(s=>s.classList.remove("active"));
-    if(sbMap[n]) document.getElementById(sbMap[n]).classList.add("active");
-    if(n===4) populateDropdowns();
-    if(n===7) loadSavedSets();
+
+    const res = await fetch("/api/register", {
+        method:"POST", 
+        headers:{"Content-Type":"application/json"}, 
+        body:JSON.stringify({name, username, password})
+    });
+    const data = await res.json();
+
+    if (data.error) { 
+        showAlert("login-alert", data.error, "danger"); 
+        return; 
+    }
+    showAlert("login-alert", "Registered successfully! Please sign in.", "success");
+    showLogin();
+  }
+
+  async function doLogout() {
+    await fetch("/api/logout", {method:"POST"});
+    currentUser = null;
+    currentCourse = null;
+    document.getElementById("page-app").style.display = "none";
+    document.getElementById("page-login").style.display = "flex";
+  }
+
+  function showAlert(containerId, msg, type) {
+    document.getElementById(containerId).innerHTML =
+      `<div class="alert alert-${type} py-2 small">${msg}</div>`;
+  }
+
+  function showSection(name) {
+    document.querySelectorAll(".section").forEach(s => s.classList.remove("active"));
+    document.getElementById("sec-" + name).classList.add("active");
+    document.querySelectorAll(".sidebar .nav-link").forEach(s => s.classList.remove("active"));
+    const sb = document.getElementById("sb-" + name);
+    if (sb) sb.classList.add("active");
+
+    const titles = {
+      "courses": ["All Courses", "Home › Courses"],
+      "new-course": ["New Course", "Home › Courses › New"],
+      "course-detail": ["Course Detail", `Home › Courses › ${currentCourse?.name||""}`],
+      "skills": ["Skills", `Home › Courses › ${currentCourse?.name||""} › Skills`],
+      "lessons": ["Lessons", `Home › Courses › ${currentCourse?.name||""} › Lessons`],
+      "qsets": ["Question Sets", `Home › Courses › ${currentCourse?.name||""} › Question Sets`],
+      "edit-set": ["Edit Question Set", `Home › Courses › ${currentCourse?.name||""} › Edit`],
+      "view-set": ["View Question Set", `Home › Courses › ${currentCourse?.name||""} › View`],
+      "quiz": ["Quiz", "Home › Quiz"],
+      "result": ["Result", "Home › Result"],
+    };
+    const t = titles[name] || ["MCQ Portal", "Home"];
+    document.getElementById("page-title").textContent = t[0];
+    document.getElementById("page-breadcrumb").textContent = t[1];
+    if (name === "qsets") populateSetDropdowns();
     window.scrollTo(0,0);
   }
 
-  async function saveCourse() {
-    const name=document.getElementById("course-name").value.trim();
-    const subj=document.getElementById("course-subject").value.trim();
-    const diff=document.getElementById("course-difficulty").value;
-    if(!name||!subj||!diff){alert("Please fill all required fields.");return;}
-    course={name,code:document.getElementById("course-code").value.trim(),subject:subj,difficulty:diff,marks:parseInt(document.getElementById("course-marks").value)||1,description:document.getElementById("course-desc").value.trim()};
-    await fetch("/api/course",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(course)});
-    document.getElementById("course-tag").textContent="📘 "+course.name;
-    document.getElementById("page-breadcrumb").textContent=`Home › Courses › ${course.name}`;
-    goStep(2);
+  function showCourseNav() {
+    ["sb-course-detail","sb-skills","sb-lessons","sb-qsets"].forEach(id => {
+      document.getElementById(id).style.display = "block";
+    });
+    document.getElementById("course-tag").style.display = "inline-block";
+    document.getElementById("course-tag").textContent = "📘 " + currentCourse.name;
+  }
+
+  async function loadCourses() {
+    const res = await fetch("/api/courses");
+    const courses = await res.json();
+    const el = document.getElementById("courses-list");
+
+    if (!courses.length) {
+      el.innerHTML = `<div class="text-center py-5 text-muted">
+        <i class="bi bi-journal-x" style="font-size:3rem;"></i>
+        <p class="mt-3">No courses yet. Create your first course!</p>
+        <button class="btn text-white mt-2" style="background:#7c3aed;" onclick="showSection('new-course')">
+          <i class="bi bi-plus-lg me-1"></i>Create Course
+        </button>
+      </div>`;
+      return;
+    }
+
+    el.innerHTML = courses.map(c => `
+      <div class="course-card" onclick="openCourse(${c.id})">
+        <div class="d-flex justify-content-between align-items-start">
+          <div>
+            <h6 class="fw-semibold mb-1">${c.name} <span class="badge bg-light text-dark fw-normal ms-1">${c.code||""}</span></h6>
+            <div class="text-muted small mb-2">${c.subject} · ${c.difficulty}</div>
+            <div class="d-flex gap-2 flex-wrap">
+              <span class="badge bg-light text-dark"><i class="bi bi-star me-1"></i>${c.skills?.length||0} Skills</span>
+              <span class="badge bg-light text-dark"><i class="bi bi-book me-1"></i>${c.lessons?.length||0} Lessons</span>
+              <span class="badge bg-light text-dark"><i class="bi bi-folder me-1"></i>${c.question_sets?.length||0} Sets</span>
+            </div>
+          </div>
+          <div class="text-end">
+            <div class="meta-badge mb-1">Created by ${c.created_by}</div>
+            <div class="text-muted" style="font-size:0.7rem;">${c.created_at?.split(" ")[0]||""}</div>
+            ${c.updated_by !== c.created_by ? `<div class="meta-badge mt-1">Updated by ${c.updated_by}</div>` : ""}
+          </div>
+        </div>
+      </div>`).join("");
+  }
+
+  async function openCourse(id) {
+    const res = await fetch(`/api/courses/${id}`);
+    currentCourse = await res.json();
+    showCourseNav();
+    renderCourseDetail();
+    showSection("course-detail");
+  }
+
+  function renderCourseDetail() {
+    const c = currentCourse;
+    const totalQ = (c.question_sets||[]).reduce((a,s)=>a+(s.questions?.length||0),0);
+    document.getElementById("cd-skills-count").textContent = c.skills?.length||0;
+    document.getElementById("cd-lessons-count").textContent = c.lessons?.length||0;
+    document.getElementById("cd-sets-count").textContent = c.question_sets?.length||0;
+    document.getElementById("cd-q-count").textContent = totalQ;
+
+    document.getElementById("course-detail-body").innerHTML = `
+      <div class="row g-3">
+        <div class="col-md-4"><strong class="small text-muted">Course Name</strong><div>${c.name}</div></div>
+        <div class="col-md-4"><strong class="small text-muted">Code</strong><div>${c.code||"—"}</div></div>
+        <div class="col-md-4"><strong class="small text-muted">Subject</strong><div>${c.subject}</div></div>
+        <div class="col-md-4"><strong class="small text-muted">Difficulty</strong><div>${c.difficulty}</div></div>
+        <div class="col-md-4"><strong class="small text-muted">Marks/Question</strong><div>${c.marks}</div></div>
+        <div class="col-md-4"><strong class="small text-muted">Description</strong><div>${c.description||"—"}</div></div>
+        <div class="col-12">
+          <span class="meta-badge me-2"><i class="bi bi-person-fill me-1"></i>Created by ${c.created_by} on ${c.created_at?.split(" ")[0]||""}</span>
+          <span class="meta-badge"><i class="bi bi-pencil-fill me-1"></i>Last updated by ${c.updated_by} on ${c.updated_at?.split(" ")[0]||""}</span>
+        </div>
+      </div>`;
+
+    renderCourseSets();
+
+    renderSkillsList(c.skills||[]);
+    renderLessonsList(c.lessons||[]);
+  }
+
+  function renderCourseSets() {
+    const c = currentCourse;
+    const el = document.getElementById("course-sets-list");
+    if (!c.question_sets?.length) {
+      el.innerHTML = '<p class="text-muted small">No question sets yet.</p>';
+      return;
+    }
+    el.innerHTML = c.question_sets.map(s => `
+      <div class="set-card">
+        <div>
+          <div class="fw-semibold">${s.name}
+            <span class="badge bg-light text-dark fw-normal ms-1">${s.type||""}</span>
+          </div>
+          <div class="text-muted small mt-1">
+            Questions: ${s.questions?.length||0} &nbsp;|&nbsp;
+            Difficulty: ${s.difficulty||"—"} &nbsp;|&nbsp;
+            Marks: ${s.questions?.reduce((a,q)=>a+(q.marks||1),0)||0}
+          </div>
+          <div class="mt-1">
+            <span class="meta-badge me-1"><i class="bi bi-upload me-1"></i>Uploaded by ${s.created_by}</span>
+            ${s.updated_by !== s.created_by ? `<span class="meta-badge"><i class="bi bi-pencil me-1"></i>Edited by ${s.updated_by}</span>` : ""}
+          </div>
+          ${s.edit_history?.length > 1 ? `
+          <div class="mt-1">
+            <small class="text-muted"><i class="bi bi-clock-history me-1"></i>
+              ${s.edit_history.map(h=>`${h.action} by ${h.by} at ${h.at}`).join(" → ")}
+            </small>
+          </div>` : ""}
+        </div>
+        <div class="d-flex gap-2 flex-wrap mt-2 mt-md-0">
+          <button class="btn btn-sm btn-outline-primary" onclick="viewSet(${s.id})"><i class="bi bi-eye"></i></button>
+          <button class="btn btn-sm btn-outline-warning" onclick="editSet(${s.id})"><i class="bi bi-pencil"></i></button>
+          <button class="btn btn-sm text-white" style="background:#7c3aed;" onclick="startQuiz(${s.id})"><i class="bi bi-play-fill"></i> Quiz</button>
+          <button class="btn btn-sm btn-outline-danger" onclick="deleteSet(${s.id})"><i class="bi bi-trash"></i></button>
+        </div>
+      </div>`).join("");
+  }
+
+  async function createCourse() {
+    const name = document.getElementById("nc-name").value.trim();
+    const subj = document.getElementById("nc-subject").value.trim();
+    const diff = document.getElementById("nc-difficulty").value;
+    if (!name || !subj || !diff) { alert("Please fill all required fields."); return; }
+
+    const res = await fetch("/api/courses", {
+      method:"POST", headers:{"Content-Type":"application/json"},
+      body: JSON.stringify({
+        name, code: document.getElementById("nc-code").value.trim(),
+        subject: subj, difficulty: diff,
+        marks: parseInt(document.getElementById("nc-marks").value)||1,
+        description: document.getElementById("nc-desc").value.trim()
+      })
+    });
+    const data = await res.json();
+    if (data.error) { alert(data.error); return; }
+    currentCourse = data.course;
+    showCourseNav();
+    renderCourseDetail();
+    showSection("course-detail");
+  }
+
+  function editCourse() {
+    const c = currentCourse;
+    document.getElementById("nc-name").value = c.name;
+    document.getElementById("nc-code").value = c.code||"";
+    document.getElementById("nc-subject").value = c.subject;
+    document.getElementById("nc-difficulty").value = c.difficulty;
+    document.getElementById("nc-marks").value = c.marks;
+    document.getElementById("nc-desc").value = c.description||"";
+    showSection("new-course");
+    document.querySelector("#sec-new-course .card-footer .btn:last-child").textContent = "Update Course";
+    document.querySelector("#sec-new-course .card-footer .btn:last-child").onclick = updateCourse;
+  }
+
+  async function updateCourse() {
+    const res = await fetch(`/api/courses/${currentCourse.id}`, {
+      method:"PUT", headers:{"Content-Type":"application/json"},
+      body: JSON.stringify({
+        name: document.getElementById("nc-name").value.trim(),
+        code: document.getElementById("nc-code").value.trim(),
+        subject: document.getElementById("nc-subject").value.trim(),
+        difficulty: document.getElementById("nc-difficulty").value,
+        marks: parseInt(document.getElementById("nc-marks").value)||1,
+        description: document.getElementById("nc-desc").value.trim()
+      })
+    });
+    const data = await res.json();
+    if (data.error) { alert(data.error); return; }
+    await openCourse(currentCourse.id);
   }
 
   async function addSkill() {
-    const name=document.getElementById("skill-name").value.trim();
-    const desc=document.getElementById("skill-desc").value.trim();
-    if(!name||!desc){alert("Please fill Skill Name and Description.");return;}
-    const res=await fetch("/api/skills",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({name,description:desc})});
-    const data=await res.json();
-    skills.push(data.skill);
-    document.getElementById("skill-name").value="";
-    document.getElementById("skill-desc").value="";
-    renderSkills();
+    const name = document.getElementById("skill-name").value.trim();
+    const desc = document.getElementById("skill-desc").value.trim();
+    if (!name || !desc) { alert("Please fill Skill Name and Description."); return; }
+
+    const res = await fetch(`/api/courses/${currentCourse.id}/skills`, {
+      method:"POST", headers:{"Content-Type":"application/json"},
+      body: JSON.stringify({name, description: desc})
+    });
+    const data = await res.json();
+
+    const courseRes = await fetch(`/api/courses/${currentCourse.id}`);
+    currentCourse = await courseRes.json();
+
+    document.getElementById("skill-name").value = "";
+    document.getElementById("skill-desc").value = "";
+    renderSkillsList(currentCourse.skills);
+    alert("Skill added successfully!");
   }
 
-  function renderSkills() {
-    const el=document.getElementById("skills-list");
-    if(!skills.length){el.innerHTML='<p class="text-muted small">No skills added yet.</p>';return;}
-    el.innerHTML=skills.map(s=>`
+  function renderSkillsList(skills) {
+    const el = document.getElementById("skills-list");
+    if (!skills.length) { el.innerHTML = '<p class="text-muted small">No skills added yet.</p>'; return; }
+    el.innerHTML = skills.map(s => `
       <div class="d-flex align-items-center justify-content-between border rounded p-2 mb-2">
         <div><strong>${s.name}</strong> <span class="text-muted small ms-2">${s.description}</span></div>
-        <span class="badge bg-success">Added</span>
+        <div><span class="meta-badge me-1">By ${s.added_by||"—"}</span><span class="badge bg-success">Added</span></div>
       </div>`).join("");
   }
 
   async function addLesson() {
-    const name=document.getElementById("lesson-name").value.trim();
-    const summary=document.getElementById("lesson-summary").value.trim();
-    const slno=document.getElementById("lesson-slno").value;
-    if(!name||!summary){alert("Please fill Lesson Name and Summary.");return;}
-    const res=await fetch("/api/lessons",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({sl_no:slno,name,summary})});
-    const data=await res.json();
-    lessons.push(data.lesson);
-    document.getElementById("lesson-name").value="";
-    document.getElementById("lesson-summary").value="";
-    document.getElementById("lesson-slno").value=lessons.length+1;
-    renderLessons();
+    const name    = document.getElementById("lesson-name").value.trim();
+    const summary = document.getElementById("lesson-summary").value.trim();
+    const slno    = document.getElementById("lesson-slno").value;
+    if (!name || !summary) { alert("Please fill Lesson Name and Summary."); return; }
+
+    const res = await fetch(`/api/courses/${currentCourse.id}/lessons`, {
+      method:"POST", headers:{"Content-Type":"application/json"},
+      body: JSON.stringify({sl_no: slno, name, summary})
+    });
+    const data = await res.json();
+
+    const courseRes = await fetch(`/api/courses/${currentCourse.id}`);
+    currentCourse = await courseRes.json();
+
+    document.getElementById("lesson-name").value = "";
+    document.getElementById("lesson-summary").value = "";
+    document.getElementById("lesson-slno").value = currentCourse.lessons.length + 1;
+    renderLessonsList(currentCourse.lessons);
+    alert("Lesson added successfully!");
   }
 
-  function renderLessons() {
-    const el=document.getElementById("lessons-list");
-    if(!lessons.length){el.innerHTML='<p class="text-muted small">No lessons added yet.</p>';return;}
-    el.innerHTML=lessons.map(l=>`
+  function renderLessonsList(lessons) {
+    const el = document.getElementById("lessons-list");
+    if (!lessons.length) { el.innerHTML = '<p class="text-muted small">No lessons added yet.</p>'; return; }
+    el.innerHTML = lessons.map(l => `
       <div class="d-flex align-items-center justify-content-between border rounded p-2 mb-2">
         <div><strong>${l.sl_no}. ${l.name}</strong> <span class="text-muted small ms-2">${l.summary}</span></div>
-        <span class="badge bg-success">Added</span>
+        <div><span class="meta-badge me-1">By ${l.added_by||"—"}</span><span class="badge bg-success">Added</span></div>
       </div>`).join("");
   }
 
-  async function populateDropdowns() {
-    const [sRes,lRes]=await Promise.all([fetch("/api/skills"),fetch("/api/lessons")]);
-    skills=await sRes.json();
-    lessons=await lRes.json();
-    const sl=document.getElementById("set-lesson");
-    const ss=document.getElementById("set-skill");
-    sl.innerHTML='<option value="">Select Lesson</option>'+lessons.map(l=>`<option value="${l.id}">${l.name}</option>`).join("");
-    ss.innerHTML='<option value="">Select Skill</option>'+skills.map(s=>`<option value="${s.id}">${s.name}</option>`).join("");
-  }
-
-  function saveSet() {
-    const name=document.getElementById("set-name").value.trim();
-    const type=document.getElementById("set-type").value;
-    const lessonId=document.getElementById("set-lesson").value;
-    if(!name||!type){alert("Please fill Set Name and Assessment Type.");return;}
-    currentSet={name,type,difficulty:document.getElementById("set-difficulty").value,marks:parseInt(document.getElementById("set-marks").value)||1,lesson_id:lessonId?parseInt(lessonId):null,skill_id:document.getElementById("set-skill").value?parseInt(document.getElementById("set-skill").value):null,questions:[]};
-    const lessonName=lessons.find(l=>l.id==lessonId)?.name||"";
-    document.getElementById("set-info-strip").innerHTML=`<strong>Set:</strong> ${name} &nbsp;|&nbsp; <strong>Type:</strong> ${type} &nbsp;|&nbsp; <strong>Lesson:</strong> ${lessonName||"—"}`;
-    goStep(5);
-  }
-
-  function previewImg(input) {
-    const file=input.files[0];
-    if(!file) return;
-    const reader=new FileReader();
-    reader.onload=e=>{
-      const img=document.getElementById("img-preview");
-      img.src=e.target.result; img.style.display="block";
-      document.getElementById("extract-btn").style.display="inline-block";
-      document.getElementById("upload-status").innerHTML="";
-    };
-    reader.readAsDataURL(file);
-  }
-
-  const dz=document.getElementById("drop-zone");
-  dz.addEventListener("dragover",e=>{e.preventDefault();dz.style.borderColor="#7c3aed";});
-  dz.addEventListener("dragleave",()=>{dz.style.borderColor="";});
-  dz.addEventListener("drop",e=>{
-    e.preventDefault();dz.style.borderColor="";
-    const file=e.dataTransfer.files[0];
-    if(file&&file.type.startsWith("image/")){
-      const inp=document.getElementById("file-input");
-      const dt=new DataTransfer();dt.items.add(file);
-      inp.files=dt.files;previewImg(inp);
+  function goQsStep(n) {
+    [1,2,3,4].forEach(i => {
+      document.getElementById(`qs-step-${i}`).style.display = i === n ? "block" : "none";
+    });
+    for (let i=1; i<=4; i++) {
+      const el = document.getElementById("stp-"+i);
+      if (!el) continue;
+      el.classList.remove("active","done");
+      if (i < n) el.classList.add("done");
+      if (i === n) el.classList.add("active");
     }
+    if (n === 1) populateSetDropdowns();
+    window.scrollTo(0,0);
+  }
+
+  async function populateSetDropdowns() {
+    const res = await fetch(`/api/courses/${currentCourse.id}`);
+    currentCourse = await res.json();
+
+    const sl = document.getElementById("set-lesson");
+    const ss = document.getElementById("set-skill");
+
+    const lessons = currentCourse.lessons || [];
+    const skills  = currentCourse.skills  || [];
+
+    sl.innerHTML = '<option value="">Select Lesson</option>' +
+      lessons.map(l=>`<option value="${l.id}">${l.sl_no}. ${l.name}</option>`).join("");
+
+    ss.innerHTML = '<option value="">Select Skill</option>' +
+      skills.map(s=>`<option value="${s.id}">${s.name}</option>`).join("");
+
+    if (!lessons.length) {
+      sl.innerHTML += '<option disabled>No lessons added yet — go to Lessons tab first</option>';
+    }
+    if (!skills.length) {
+      ss.innerHTML += '<option disabled>No skills added yet — go to Skills tab first</option>';
+    }
+  }
+
+  function resetSetForm() {
+    document.getElementById("set-name").value = "";
+    document.getElementById("set-type").value = "";
+    document.getElementById("set-difficulty").value = "";
+    document.getElementById("set-marks").value = "1";
+    document.getElementById("file-input").value = "";
+    document.getElementById("file-preview-list").innerHTML = "";
+    document.getElementById("upload-status").innerHTML = "";
+    document.getElementById("extract-btn").disabled = true;
+    questions = [];
+  }
+
+  function previewFiles(input) {
+    const files = Array.from(input.files);
+    if (!files.length) return;
+    document.getElementById("file-preview-list").innerHTML = files.map(f =>
+      `<div class="d-flex align-items-center gap-2 border rounded p-2 mb-1 small">
+        <i class="bi bi-file-earmark-text text-primary"></i>
+        <span>${f.name}</span>
+        <span class="badge bg-light text-dark ms-auto">${(f.size/1024).toFixed(1)} KB</span>
+      </div>`).join("");
+    document.getElementById("extract-btn").disabled = false;
+    document.getElementById("upload-status").innerHTML = "";
+  }
+
+  function previewAddFiles(input) {
+    const files = Array.from(input.files);
+    if (!files.length) return;
+    document.getElementById("add-file-preview").innerHTML = files.map(f =>
+      `<div class="d-flex align-items-center gap-2 border rounded p-1 mb-1 small">
+        <i class="bi bi-file-earmark-text text-primary"></i>
+        <span>${f.name}</span>
+      </div>`).join("");
+    document.getElementById("add-extract-btn").disabled = false;
+  }
+
+  const dz = document.getElementById("drop-zone");
+  dz.addEventListener("dragover", e => { e.preventDefault(); dz.style.borderColor="#7c3aed"; });
+  dz.addEventListener("dragleave", () => { dz.style.borderColor=""; });
+  dz.addEventListener("drop", e => {
+    e.preventDefault(); dz.style.borderColor="";
+    const inp = document.getElementById("file-input");
+    inp.files = e.dataTransfer.files;
+    previewFiles(inp);
   });
 
-  function setStatus(msg,type){
-    const map={"info":"alert-info","success":"alert-success","danger":"alert-danger"};
-    document.getElementById("upload-status").innerHTML=`<div class="alert ${map[type]||'alert-info'}">${msg}</div>`;
+  const adz = document.getElementById("add-drop-zone");
+  adz.addEventListener("dragover", e => { e.preventDefault(); adz.style.borderColor="#7c3aed"; });
+  adz.addEventListener("dragleave", () => { adz.style.borderColor=""; });
+  adz.addEventListener("drop", e => {
+    e.preventDefault(); adz.style.borderColor="";
+    const inp = document.getElementById("add-file-input");
+    inp.files = e.dataTransfer.files;
+    previewAddFiles(inp);
+  });
+
+  function setStatus(id, msg, type) {
+    const map = {"info":"alert-info","success":"alert-success","danger":"alert-danger"};
+    document.getElementById(id).innerHTML = `<div class="alert ${map[type]||'alert-info'} small">${msg}</div>`;
   }
 
   async function extractQuestions() {
-    const btn=document.getElementById("extract-btn");
-    btn.disabled=true;
-    setStatus('<span class="spinner-border spinner-border-sm me-2"></span> Extracting questions and auto-translating…','info');
-    const fd=new FormData();
-    fd.append("image",document.getElementById("file-input").files[0]);
+    const name = document.getElementById("set-name").value.trim();
+    const type = document.getElementById("set-type").value;
+    if (!name || !type) { alert("Please fill Set Name and Assessment Type first."); goQsStep(1); return; }
+
+    currentSet = {
+      name, type,
+      difficulty: document.getElementById("set-difficulty").value,
+      marks: parseInt(document.getElementById("set-marks").value)||1,
+      lesson_id: document.getElementById("set-lesson").value ? parseInt(document.getElementById("set-lesson").value) : null,
+      skill_id: document.getElementById("set-skill").value ? parseInt(document.getElementById("set-skill").value) : null,
+      questions: []
+    };
+
+    const btn = document.getElementById("extract-btn");
+    btn.disabled = true;
+    setStatus("upload-status", '<span class="spinner-border spinner-border-sm me-2"></span>Extracting and translating…', "info");
+
+    const fd = new FormData();
+    Array.from(document.getElementById("file-input").files).forEach(f => fd.append("files", f));
+
     try {
-      const res=await fetch("/upload",{method:"POST",body:fd});
-      const data=await res.json();
-      if(data.error) throw new Error(data.error);
-      questions=data.questions;
-      if(!questions.length) throw new Error("No questions found.");
-      const translated=questions.filter(q=>q.hi_translated).length;
-      setStatus(`<i class="bi bi-check-circle-fill me-2"></i>Extracted ${questions.length} questions. ${translated>0?`<span class="translated-badge ms-1">🤖 ${translated} auto-translated to Hindi</span>`:""}`, "success");
-      document.getElementById("q-count-label").textContent=`${questions.length} questions`;
-      setTimeout(()=>{buildEditor(questions,"editor-container");goStep(6);},700);
+      const res = await fetch("/upload", {method:"POST", body:fd});
+      const data = await res.json();
+      if (data.error) throw new Error(data.error);
+      questions = data.questions;
+      if (!questions.length) throw new Error("No questions found.");
+      const translated = questions.filter(q=>q.hi_translated).length;
+      setStatus("upload-status",
+        `<i class="bi bi-check-circle-fill me-2"></i>Extracted ${questions.length} questions.
+         ${translated>0?`<span class="translated-badge ms-1">🤖 ${translated} auto-translated</span>`:""}`,
+        "success");
+      document.getElementById("q-count-label").textContent = `${questions.length} questions`;
+      setTimeout(() => { buildEditor(questions, "editor-container", ""); goQsStep(3); }, 700);
     } catch(err) {
-      setStatus(`<i class="bi bi-exclamation-triangle-fill me-2"></i>${err.message}`,"danger");
-      btn.disabled=false;
+      setStatus("upload-status", `<i class="bi bi-exclamation-triangle-fill me-2"></i>${err.message}`, "danger");
+      btn.disabled = false;
     }
   }
 
-  function buildEditor(qs, containerId) {
-    const c=document.getElementById(containerId);
-    c.innerHTML="";
-    qs.forEach((q,qi)=>{
-      const prefix=containerId==="edit-editor-container"?"e":"";
-      const enOpts=LABELS.map((lbl,oi)=>`
+  async function extractMoreQuestions() {
+    const btn = document.getElementById("add-extract-btn");
+    btn.disabled = true;
+    setStatus("add-upload-status", '<span class="spinner-border spinner-border-sm me-2"></span>Extracting…', "info");
+
+    const fd = new FormData();
+    Array.from(document.getElementById("add-file-input").files).forEach(f => fd.append("files", f));
+
+    try {
+      const res = await fetch(`/api/courses/${currentCourse.id}/question_sets/${editSetId}/add_questions`, {method:"POST", body:fd});
+      const data = await res.json();
+      if (data.error) throw new Error(data.error);
+      newExtractedQuestions = data.questions;
+      setStatus("add-upload-status", `<i class="bi bi-check-circle-fill me-2"></i>Found ${data.questions.length} new questions.`, "success");
+      buildEditor(newExtractedQuestions, "new-editor-container", "n");
+      document.getElementById("new-questions-editor").style.display = "block";
+    } catch(err) {
+      setStatus("add-upload-status", `<i class="bi bi-exclamation-triangle-fill me-2"></i>${err.message}`, "danger");
+      btn.disabled = false;
+    }
+  }
+
+  function buildEditor(qs, containerId, prefix) {
+    const c = document.getElementById(containerId);
+    c.innerHTML = "";
+    qs.forEach((q, qi) => {
+      const p = prefix + qi;
+      const enOpts = LABELS.map((lbl,oi) => `
         <div class="d-flex align-items-center gap-2 mb-2">
           <div class="opt-label-circle">${lbl}</div>
-          <input class="form-control form-control-sm" id="${prefix}en-opt-${qi}-${oi}" value="${esc(q.options&&q.options[oi]||'')}" placeholder="Option ${lbl}">
+          <input class="form-control form-control-sm" id="en-opt-${p}-${oi}" value="${esc(q.options&&q.options[oi]||'')}" placeholder="Option ${lbl}">
         </div>`).join("");
-      const hiOpts=LABELS.map((lbl,oi)=>`
+      const hiOpts = LABELS.map((lbl,oi) => `
         <div class="d-flex align-items-center gap-2 mb-2">
           <div class="opt-label-circle">${lbl}</div>
-          <input class="form-control form-control-sm hi-font" id="${prefix}hi-opt-${qi}-${oi}" value="${esc(q.hindi_options&&q.hindi_options[oi]||'')}" placeholder="विकल्प ${lbl}">
+          <input class="form-control form-control-sm hi-font" id="hi-opt-${p}-${oi}" value="${esc(q.hindi_options&&q.hindi_options[oi]||'')}" placeholder="विकल्प ${lbl}">
         </div>`).join("");
 
-      const translatedBadge=q.hi_translated?`<span class="translated-badge">🤖 Auto Translated</span>`:"";
-      const correctVal=q.answer||"";
+      const translatedBadge = q.hi_translated ? `<span class="translated-badge">🤖 Auto Translated</span>` : "";
+      const correctVal = q.answer || "";
 
-      c.innerHTML+=`
+      c.innerHTML += `
         <div class="q-editor">
           <div class="q-editor-head">
             <div class="d-flex align-items-center gap-2">
@@ -527,37 +984,37 @@
             </div>
             <div class="d-flex align-items-center gap-2 flex-wrap">
               <div class="d-flex gap-1">
-                <span class="lang-tab active" id="${prefix}tab-en-${qi}" onclick="swLang('${prefix}',${qi},'en')">English</span>
-                <span class="lang-tab" id="${prefix}tab-hi-${qi}" onclick="swLang('${prefix}',${qi},'hi')">हिंदी</span>
+                <span class="lang-tab active" id="tab-en-${p}" onclick="swLang('${p}','en')">English</span>
+                <span class="lang-tab" id="tab-hi-${p}" onclick="swLang('${p}','hi')">हिंदी</span>
               </div>
-              <button class="btn btn-sm btn-outline-warning" onclick="manualTranslate('${prefix}',${qi},'en_to_hi')" title="Translate EN→HI">
+              <button class="btn btn-sm btn-outline-warning" onclick="manualTranslate('${p}','en_to_hi')">
                 <i class="bi bi-translate"></i> EN→हिंदी
               </button>
-              <button class="btn btn-sm btn-outline-info" onclick="manualTranslate('${prefix}',${qi},'hi_to_en')" title="Translate HI→EN">
+              <button class="btn btn-sm btn-outline-info" onclick="manualTranslate('${p}','hi_to_en')">
                 <i class="bi bi-translate"></i> हिंदी→EN
               </button>
             </div>
           </div>
           <div class="p-3">
-            <div id="${prefix}panel-en-${qi}">
+            <div id="panel-en-${p}">
               <div class="mb-2">
                 <label class="form-label fw-semibold small">Question (English) <span class="req">●</span></label>
-                <textarea class="form-control form-control-sm" id="${prefix}en-q-${qi}" rows="2">${esc(q.question||'')}</textarea>
+                <textarea class="form-control form-control-sm" id="en-q-${p}" rows="2">${esc(q.question||'')}</textarea>
               </div>
               <label class="form-label fw-semibold small">Options</label>
               ${enOpts}
             </div>
-            <div id="${prefix}panel-hi-${qi}" style="display:none">
+            <div id="panel-hi-${p}" style="display:none">
               <div class="mb-2">
                 <label class="form-label fw-semibold small">Question (हिंदी)</label>
-                <textarea class="form-control form-control-sm hi-font" id="${prefix}hi-q-${qi}" rows="2">${esc(q.hindi_question||'')}</textarea>
+                <textarea class="form-control form-control-sm hi-font" id="hi-q-${p}" rows="2">${esc(q.hindi_question||'')}</textarea>
               </div>
               <label class="form-label fw-semibold small">विकल्प</label>
               ${hiOpts}
             </div>
             <div class="d-flex align-items-center gap-2 mt-3 pt-3 border-top">
-              <label class="fw-semibold small mb-0">Correct Answer <span class="req">●</span></label>
-              <select class="form-select form-select-sm w-auto" id="${prefix}ans-${qi}">
+              <label class="fw-semibold small mb-0">✅ Correct Answer <span class="req">●</span></label>
+              <select class="form-select form-select-sm w-auto" id="ans-${p}">
                 <option value="">-- Select --</option>
                 ${LABELS.map(l=>`<option value="${l}" ${correctVal===l?"selected":""}>${l}</option>`).join("")}
               </select>
@@ -567,222 +1024,248 @@
     });
   }
 
-  function swLang(prefix,qi,lang) {
-    document.getElementById(`${prefix}panel-en-${qi}`).style.display=lang==="en"?"block":"none";
-    document.getElementById(`${prefix}panel-hi-${qi}`).style.display=lang==="hi"?"block":"none";
-    document.getElementById(`${prefix}tab-en-${qi}`).classList.toggle("active",lang==="en");
-    document.getElementById(`${prefix}tab-hi-${qi}`).classList.toggle("active",lang==="hi");
+  function swLang(p, lang) {
+    document.getElementById(`panel-en-${p}`).style.display = lang==="en" ? "block" : "none";
+    document.getElementById(`panel-hi-${p}`).style.display = lang==="hi" ? "block" : "none";
+    document.getElementById(`tab-en-${p}`).classList.toggle("active", lang==="en");
+    document.getElementById(`tab-hi-${p}`).classList.toggle("active", lang==="hi");
   }
 
-  async function manualTranslate(prefix,qi,direction) {
+  async function manualTranslate(p, direction) {
     try {
-      if(direction==="en_to_hi") {
-        const enQ=document.getElementById(`${prefix}en-q-${qi}`).value.trim();
-        const hiQRes=await fetch("/translate",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({text:enQ,direction:"en_to_hi"})});
-        const hiQData=await hiQRes.json();
-        document.getElementById(`${prefix}hi-q-${qi}`).value=hiQData.translated||"";
-
-        for(let oi=0;oi<4;oi++){
-          const enOpt=document.getElementById(`${prefix}en-opt-${qi}-${oi}`).value.trim();
-          if(enOpt){
-            const r=await fetch("/translate",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({text:enOpt,direction:"en_to_hi"})});
-            const d=await r.json();
-            document.getElementById(`${prefix}hi-opt-${qi}-${oi}`).value=d.translated||"";
+      if (direction === "en_to_hi") {
+        const enQ = document.getElementById(`en-q-${p}`).value.trim();
+        const r = await fetch("/translate", {method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify({text:enQ, direction:"en_to_hi"})});
+        const d = await r.json();
+        document.getElementById(`hi-q-${p}`).value = d.translated||"";
+        for (let oi=0; oi<4; oi++) {
+          const enOpt = document.getElementById(`en-opt-${p}-${oi}`).value.trim();
+          if (enOpt) {
+            const r2 = await fetch("/translate", {method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify({text:enOpt, direction:"en_to_hi"})});
+            const d2 = await r2.json();
+            document.getElementById(`hi-opt-${p}-${oi}`).value = d2.translated||"";
           }
         }
-        swLang(prefix,qi,"hi");
-
+        swLang(p, "hi");
       } else {
-        const hiQ=document.getElementById(`${prefix}hi-q-${qi}`).value.trim();
-        const enQRes=await fetch("/translate",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({text:hiQ,direction:"hi_to_en"})});
-        const enQData=await enQRes.json();
-        document.getElementById(`${prefix}en-q-${qi}`).value=enQData.translated||"";
-
-        for(let oi=0;oi<4;oi++){
-          const hiOpt=document.getElementById(`${prefix}hi-opt-${qi}-${oi}`).value.trim();
-          if(hiOpt){
-            const r=await fetch("/translate",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({text:hiOpt,direction:"hi_to_en"})});
-            const d=await r.json();
-            document.getElementById(`${prefix}en-opt-${qi}-${oi}`).value=d.translated||"";
+        const hiQ = document.getElementById(`hi-q-${p}`).value.trim();
+        const r = await fetch("/translate", {method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify({text:hiQ, direction:"hi_to_en"})});
+        const d = await r.json();
+        document.getElementById(`en-q-${p}`).value = d.translated||"";
+        for (let oi=0; oi<4; oi++) {
+          const hiOpt = document.getElementById(`hi-opt-${p}-${oi}`).value.trim();
+          if (hiOpt) {
+            const r2 = await fetch("/translate", {method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify({text:hiOpt, direction:"hi_to_en"})});
+            const d2 = await r2.json();
+            document.getElementById(`en-opt-${p}-${oi}`).value = d2.translated||"";
           }
         }
-        swLang(prefix,qi,"en");
+        swLang(p, "en");
       }
     } catch(err) { alert("Translation failed: "+err.message); }
   }
 
-  function esc(str){return String(str).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");}
+  function esc(str) {
+    return String(str).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+  }
 
-  async function saveAll() {
-    const finalQ=questions.map((q,qi)=>{
-      const enOpts={},hiOpts={};
-      LABELS.forEach((lbl,oi)=>{
-        enOpts[lbl]=document.getElementById(`en-opt-${qi}-${oi}`).value.trim();
-        hiOpts[lbl]=document.getElementById(`hi-opt-${qi}-${oi}`).value.trim();
+  function readEditorQuestions(qs, prefix) {
+    return qs.map((q, qi) => {
+      const p = prefix + qi;
+      const enOpts = {}, hiOpts = {};
+      LABELS.forEach((lbl,oi) => {
+        enOpts[lbl] = document.getElementById(`en-opt-${p}-${oi}`)?.value.trim()||"";
+        hiOpts[lbl] = document.getElementById(`hi-opt-${p}-${oi}`)?.value.trim()||"";
       });
       return {
-        id:qi+1,
-        question_type:"multiple_choice",
-        translations:{
-          en:{question:document.getElementById(`en-q-${qi}`).value.trim(),options:enOpts,explanation:"",translated:false},
-          hi:{question:document.getElementById(`hi-q-${qi}`).value.trim(),options:hiOpts,explanation:"",translated:q.hi_translated||false}
+        id: qi+1,
+        question_type: "multiple_choice",
+        translations: {
+          en: {question: document.getElementById(`en-q-${p}`)?.value.trim()||"", options:enOpts, explanation:"", translated:false},
+          hi: {question: document.getElementById(`hi-q-${p}`)?.value.trim()||"", options:hiOpts, explanation:"", translated:q.hi_translated||false}
         },
-        correct_answer:document.getElementById(`ans-${qi}`).value,
-        difficulty:currentSet.difficulty||"medium",
-        marks:currentSet.marks||1,
-        subject:course.subject||""
+        correct_answer: document.getElementById(`ans-${p}`)?.value||"",
+        difficulty: currentSet.difficulty||"medium",
+        marks: currentSet.marks||1,
+        subject: currentCourse?.subject||"",
+        uploaded_by: currentUser?.name||"",
+        uploaded_at: new Date().toLocaleString()
       };
     });
-
-    currentSet.questions=finalQ;
-
-    try {
-      const res=await fetch("/api/question_sets",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({question_set:currentSet})});
-      const data=await res.json();
-      if(data.error) throw new Error(data.error);
-      loadSavedSets();
-      goStep(7);
-    } catch(err){alert("Save failed: "+err.message);}
   }
 
-  async function loadSavedSets() {
-    const res=await fetch("/api/question_sets");
-    const sets=await res.json();
-    const totalQ=sets.reduce((a,s)=>a+(s.questions?.length||0),0);
-    const totalM=sets.reduce((a,s)=>a+(s.questions?.reduce((b,q)=>b+(q.marks||1),0)||0),0);
-    document.getElementById("sum-sets").textContent=sets.length;
-    document.getElementById("sum-q").textContent=totalQ;
-    document.getElementById("sum-m").textContent=totalM;
+  async function saveAll() {
+    const finalQ = readEditorQuestions(questions, "");
+    currentSet.questions = finalQ;
 
-    const data=await (await fetch("/api/course")).json();
-    const c=data.course||{};
-    document.getElementById("saved-course-info").innerHTML=
-      `<strong>Course:</strong> ${c.name||"—"} &nbsp;|&nbsp; <strong>Subject:</strong> ${c.subject||"—"} &nbsp;|&nbsp; <strong>Difficulty:</strong> ${c.difficulty||"—"}`;
-
-    const el=document.getElementById("sets-list");
-    if(!sets.length){el.innerHTML='<p class="text-muted">No question sets saved yet.</p>';return;}
-    el.innerHTML=sets.map(s=>`
-      <div class="set-card">
-        <div>
-          <div class="fw-semibold">${s.name}</div>
-          <div class="text-muted small">
-            Type: ${s.type||"—"} &nbsp;|&nbsp;
-            Questions: ${s.questions?.length||0} &nbsp;|&nbsp;
-            Marks: ${s.questions?.reduce((a,q)=>a+(q.marks||1),0)||0} &nbsp;|&nbsp;
-            Difficulty: ${s.difficulty||"—"}
-          </div>
-        </div>
-        <div class="d-flex gap-2">
-          <button class="btn btn-sm btn-outline-primary" onclick="openSet(${s.id})"><i class="bi bi-eye"></i> View</button>
-          <button class="btn btn-sm btn-outline-warning" onclick="editSet(${s.id})"><i class="bi bi-pencil"></i> Edit</button>
-          <button class="btn btn-sm text-white" style="background:#7c3aed;" onclick="startQuizFromSet(${s.id})"><i class="bi bi-play-fill"></i> Quiz</button>
-          <button class="btn btn-sm btn-outline-danger" onclick="deleteSet(${s.id})"><i class="bi bi-trash"></i></button>
-        </div>
-      </div>`).join("");
-  }
-
-  async function openSet(id) {
-    const res=await fetch(`/api/question_sets/${id}`);
-    const s=await res.json();
-    let html=`<h6 class="fw-bold mb-3">${s.name} — ${s.questions?.length||0} Questions</h6>`;
-    (s.questions||[]).forEach((q,i)=>{
-      const en=q.translations?.en||{};
-      const hi=q.translations?.hi||{};
-      html+=`<div class="card mb-2 border">
-        <div class="card-body py-2 px-3">
-          <div class="fw-semibold small">Q${i+1}. ${en.question||""}</div>
-          <div class="hi-font text-muted small">${hi.question||""}</div>
-          <div class="d-flex gap-2 mt-1 flex-wrap">
-            ${Object.entries(en.options||{}).map(([k,v])=>`<span class="badge ${q.correct_answer===k?"bg-success":"bg-light text-dark"}">${k}: ${v}</span>`).join("")}
-          </div>
-          <div class="small mt-1">Answer: <strong>${q.correct_answer||"—"}</strong> ${hi.translated?'<span class="translated-badge ms-1">🤖 Translated</span>':''}</div>
-        </div>
-      </div>`;
+    const res = await fetch(`/api/courses/${currentCourse.id}/question_sets`, {
+      method:"POST", headers:{"Content-Type":"application/json"},
+      body: JSON.stringify({question_set: currentSet})
     });
-    document.getElementById("edit-editor-container").innerHTML=html;
-    editSetId=id;
-    goStep("edit");
+    const data = await res.json();
+    if (data.error) { alert("Save failed: "+data.error); return; }
+
+    document.getElementById("saved-summary").textContent =
+      `${finalQ.length} questions saved under "${currentSet.name}"`;
+
+    await openCourse(currentCourse.id);
+    goQsStep(4);
+  }
+
+  async function appendNewQuestions() {
+    const newQ = readEditorQuestions(newExtractedQuestions, "n");
+    const res = await fetch(`/api/courses/${currentCourse.id}/question_sets/${editSetId}`);
+    const s   = await res.json();
+
+    const existingQ = s.questions || [];
+    newQ.forEach((q,i) => q.id = existingQ.length + i + 1);
+    s.questions = [...existingQ, ...newQ];
+    s.updated_by = currentUser?.name;
+    s.updated_at = new Date().toLocaleString();
+
+    await fetch(`/api/courses/${currentCourse.id}/question_sets/${editSetId}`, {
+      method:"PUT", headers:{"Content-Type":"application/json"},
+      body:JSON.stringify(s)
+    });
+
+    editSetQuestions = s.questions.map(q=>({
+      question: q.translations?.en?.question||"",
+      options: Object.values(q.translations?.en?.options||{}),
+      hindi_question: q.translations?.hi?.question||"",
+      hindi_options: Object.values(q.translations?.hi?.options||{}),
+      hi_translated: q.translations?.hi?.translated||false,
+      answer: q.correct_answer||""
+    }));
+    buildEditor(editSetQuestions, "edit-editor-container", "e");
+    document.getElementById("new-questions-editor").style.display = "none";
+    document.getElementById("add-file-input").value = "";
+    document.getElementById("add-file-preview").innerHTML = "";
+    document.getElementById("add-upload-status").innerHTML = "";
+    document.getElementById("add-extract-btn").disabled = true;
+    alert(` ${newQ.length} questions added successfully!`);
+  }
+
+  async function viewSet(id) {
+    const res = await fetch(`/api/courses/${currentCourse.id}/question_sets/${id}`);
+    const s   = await res.json();
+
+    document.getElementById("view-set-title").innerHTML =
+      `<i class="bi bi-eye me-2"></i>${s.name} — ${s.questions?.length||0} Questions`;
+
+    document.getElementById("view-set-body").innerHTML = `
+      <div class="mb-3">
+        <span class="meta-badge me-2"><i class="bi bi-upload me-1"></i>Uploaded by ${s.created_by} on ${s.created_at?.split(" ")[0]||""}</span>
+        ${s.updated_by !== s.created_by ? `<span class="meta-badge"><i class="bi bi-pencil me-1"></i>Last edited by ${s.updated_by} on ${s.updated_at?.split(" ")[0]||""}</span>` : ""}
+      </div>
+      ${(s.questions||[]).map((q,i) => {
+        const en = q.translations?.en||{};
+        const hi = q.translations?.hi||{};
+        return `<div class="card mb-2 border">
+          <div class="card-body py-2 px-3">
+            <div class="fw-semibold small">Q${i+1}. ${en.question||""}</div>
+            <div class="hi-font text-muted small mt-1">${hi.question||""}</div>
+            <div class="d-flex gap-2 mt-2 flex-wrap">
+              ${Object.entries(en.options||{}).map(([k,v])=>
+                `<span class="badge ${q.correct_answer===k?"bg-success":"bg-light text-dark"}">${k}: ${v}</span>`
+              ).join("")}
+            </div>
+            <div class="small mt-1 text-muted">
+              Answer: <strong class="text-dark">${q.correct_answer||"—"}</strong>
+              ${hi.translated?'<span class="translated-badge ms-2">🤖 Translated</span>':''}
+              ${q.uploaded_by?`<span class="meta-badge ms-2">By ${q.uploaded_by}</span>`:''}
+            </div>
+          </div>
+        </div>`;
+      }).join("")}`;
+
+    showSection("view-set");
   }
 
   async function editSet(id) {
-    const res=await fetch(`/api/question_sets/${id}`);
-    const s=await res.json();
-    editSetId=id;
-    const qs=(s.questions||[]).map(q=>({
-      id:q.id,
-      question:q.translations?.en?.question||"",
-      options:Object.values(q.translations?.en?.options||{}),
-      hindi_question:q.translations?.hi?.question||"",
-      hindi_options:Object.values(q.translations?.hi?.options||{}),
-      hi_translated:q.translations?.hi?.translated||false,
-      answer:q.correct_answer||""
+    editSetId = id;
+    const res = await fetch(`/api/courses/${currentCourse.id}/question_sets/${id}`);
+    const s   = await res.json();
+
+    editSetQuestions = (s.questions||[]).map(q=>({
+      question: q.translations?.en?.question||"",
+      options: Object.values(q.translations?.en?.options||{}),
+      hindi_question: q.translations?.hi?.question||"",
+      hindi_options: Object.values(q.translations?.hi?.options||{}),
+      hi_translated: q.translations?.hi?.translated||false,
+      answer: q.correct_answer||""
     }));
-    buildEditor(qs,"edit-editor-container");
-    goStep("edit");
+
+    document.getElementById("new-questions-editor").style.display = "none";
+    document.getElementById("add-file-input").value = "";
+    document.getElementById("add-file-preview").innerHTML = "";
+    document.getElementById("add-upload-status").innerHTML = "";
+    document.getElementById("add-extract-btn").disabled = true;
+
+    buildEditor(editSetQuestions, "edit-editor-container", "e");
+    showSection("edit-set");
   }
 
   async function updateSet() {
-    const res=await fetch(`/api/question_sets/${editSetId}`);
-    const s=await res.json();
-    const qs=(s.questions||[]);
+    const res = await fetch(`/api/courses/${currentCourse.id}/question_sets/${editSetId}`);
+    const s   = await res.json();
 
-    const updated=qs.map((q,qi)=>{
-      const enOpts={},hiOpts={};
+    const updated = (s.questions||[]).map((q,qi) => {
+      const p = "e" + qi;
+      const enOpts={}, hiOpts={};
       LABELS.forEach((lbl,oi)=>{
-        const enEl=document.getElementById(`een-opt-${qi}-${oi}`);
-        const hiEl=document.getElementById(`ehi-opt-${qi}-${oi}`);
-        enOpts[lbl]=enEl?enEl.value.trim():"";
-        hiOpts[lbl]=hiEl?hiEl.value.trim():"";
+        enOpts[lbl] = document.getElementById(`en-opt-${p}-${oi}`)?.value.trim()||"";
+        hiOpts[lbl] = document.getElementById(`hi-opt-${p}-${oi}`)?.value.trim()||"";
       });
-      const enQEl=document.getElementById(`een-q-${qi}`);
-      const hiQEl=document.getElementById(`ehi-q-${qi}`);
-      const ansEl=document.getElementById(`eans-${qi}`);
       return {
         ...q,
         translations:{
-          en:{question:enQEl?enQEl.value.trim():q.translations?.en?.question||"",options:enOpts,explanation:""},
-          hi:{question:hiQEl?hiQEl.value.trim():q.translations?.hi?.question||"",options:hiOpts,explanation:"",translated:q.translations?.hi?.translated||false}
+          en:{question:document.getElementById(`en-q-${p}`)?.value.trim()||"",options:enOpts,explanation:""},
+          hi:{question:document.getElementById(`hi-q-${p}`)?.value.trim()||"",options:hiOpts,explanation:"",translated:q.translations?.hi?.translated||false}
         },
-        correct_answer:ansEl?ansEl.value:q.correct_answer
+        correct_answer: document.getElementById(`ans-${p}`)?.value||q.correct_answer
       };
     });
 
-    s.questions=updated;
-    await fetch(`/api/question_sets/${editSetId}`,{method:"PUT",headers:{"Content-Type":"application/json"},body:JSON.stringify(s)});
-    loadSavedSets();
-    goStep(7);
+    s.questions = updated;
+    await fetch(`/api/courses/${currentCourse.id}/question_sets/${editSetId}`, {
+      method:"PUT", headers:{"Content-Type":"application/json"},
+      body:JSON.stringify(s)
+    });
+
+    await openCourse(currentCourse.id);
+    showSection("course-detail");
   }
 
   async function deleteSet(id) {
-    if(!confirm("Delete this question set?")) return;
-    await fetch(`/api/question_sets/${id}`,{method:"DELETE"});
-    loadSavedSets();
+    if (!confirm("Delete this question set?")) return;
+    await fetch(`/api/courses/${currentCourse.id}/question_sets/${id}`, {method:"DELETE"});
+    await openCourse(currentCourse.id);
   }
 
-  async function startQuizFromSet(id) {
-    const res=await fetch(`/api/question_sets/${id}`);
-    const s=await res.json();
-    quizQuestions=(s.questions||[]).map(q=>({
-      question:q.translations?.en?.question||"",
-      options:Object.values(q.translations?.en?.options||{}),
-      hindi_question:q.translations?.hi?.question||"",
-      hindi_options:Object.values(q.translations?.hi?.options||{}),
-      answer:q.correct_answer||""
+  async function startQuiz(id) {
+    const res = await fetch(`/api/courses/${currentCourse.id}/question_sets/${id}`);
+    const s   = await res.json();
+    quizQuestions = (s.questions||[]).map(q=>({
+      question: q.translations?.en?.question||"",
+      options: Object.values(q.translations?.en?.options||{}),
+      hindi_question: q.translations?.hi?.question||"",
+      hindi_options: Object.values(q.translations?.hi?.options||{}),
+      answer: q.correct_answer||""
     }));
-    userAnswers={};
+    userAnswers = {};
     buildQuiz();
-    goStep("quiz");
+    showSection("quiz");
   }
 
   function buildQuiz() {
-    const c=document.getElementById("questions-container");
-    c.innerHTML="";
-    quizQuestions.forEach((q,qi)=>{
-      const opts=q.options.map((opt,oi)=>
+    const c = document.getElementById("questions-container");
+    c.innerHTML = "";
+    quizQuestions.forEach((q,qi) => {
+      const opts = q.options.map((opt,oi) =>
         `<button class="opt-quiz-btn" id="oq-${qi}-${oi}" onclick="selOpt(${qi},${oi})">
           <span class="opt-circle">${LABELS[oi]}</span><span>${opt}</span>
         </button>`).join("");
-      const hiPart=q.hindi_question?`
+      const hiPart = q.hindi_question ? `
         <div class="mt-3 pt-3 border-top">
           <span class="badge mb-2" style="background:#f3e8ff;color:#7c3aed;">हिंदी</span>
           <div class="hi-font fw-medium mb-2">${q.hindi_question}</div>
@@ -790,8 +1273,8 @@
             <div class="hi-font d-flex align-items-center gap-2 border rounded p-2 mb-2 bg-light">
               <span class="opt-circle">${LABELS[oi]}</span><span>${opt}</span>
             </div>`).join("")}
-        </div>`:"";
-      c.innerHTML+=`
+        </div>` : "";
+      c.innerHTML += `
         <div class="card mb-3 border">
           <div class="card-body">
             <p class="text-uppercase text-muted small fw-semibold mb-1">Question ${qi+1} of ${quizQuestions.length}</p>
@@ -805,27 +1288,27 @@
     updateProg();
   }
 
-  function selOpt(qi,oi){
+  function selOpt(qi,oi) {
     userAnswers[qi]=oi;
     quizQuestions[qi].options.forEach((_,i)=>document.getElementById(`oq-${qi}-${i}`).classList.remove("selected"));
     document.getElementById(`oq-${qi}-${oi}`).classList.add("selected");
     updateProg();
   }
 
-  function updateProg(){
-    const done=Object.keys(userAnswers).length,total=quizQuestions.length;
+  function updateProg() {
+    const done=Object.keys(userAnswers).length, total=quizQuestions.length;
     document.getElementById("prog-fill").style.width=Math.round((done/total)*100)+"%";
     document.getElementById("prog-label").textContent=`${done} / ${total} answered`;
   }
 
-  async function submitQuiz(){
-    if(!Object.keys(userAnswers).length){alert("Please answer at least one question.");return;}
-    const res=await fetch("/submit",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({answers:userAnswers,questions:quizQuestions})});
-    const data=await res.json();
+  async function submitQuiz() {
+    if (!Object.keys(userAnswers).length) { alert("Please answer at least one question."); return; }
+    const res = await fetch("/submit",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({answers:userAnswers,questions:quizQuestions})});
+    const data = await res.json();
     showResult(data);
   }
 
-  function showResult(data){
+  function showResult(data) {
     document.getElementById("score-display").textContent=`${data.score} / ${data.total}`;
     const g=data.percentage>=80?"Excellent!":data.percentage>=60?"Pass":"Needs more practice";
     document.getElementById("score-sub").textContent=`${data.percentage}% — ${g}`;
@@ -844,21 +1327,22 @@
         <p class="fw-medium mb-3">${r.question}</p>${opts}${fb}
       </div></div>`;
     }).join("");
-    goStep("result");
+    showSection("result");
   }
 
-  function resetAll(){
-    course={};skills=[];lessons=[];currentSet={};questions=[];
-    ["course-name","course-code","course-subject","course-desc","set-name"].forEach(id=>{const el=document.getElementById(id);if(el)el.value="";});
-    document.getElementById("course-marks").value="1";
-    document.getElementById("file-input").value="";
-    document.getElementById("img-preview").style.display="none";
-    document.getElementById("extract-btn").style.display="none";
-    document.getElementById("extract-btn").disabled=false;
-    document.getElementById("upload-status").innerHTML="";
-    document.getElementById("course-tag").textContent="";
-    goStep(1);
-  }
+  (async () => {
+    const res = await fetch("/api/me");
+    if (res.ok) {
+      const user = await res.json();
+      if (user && user.id) {
+        currentUser = user;
+        document.getElementById("nav-user-name").textContent = "👤 " + currentUser.name;
+        document.getElementById("page-login").style.display = "none";
+        document.getElementById("page-app").style.display = "block";
+        loadCourses();
+      }
+    }
+  })();
 </script>
 </body>
 </html>
