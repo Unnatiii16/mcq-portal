@@ -141,7 +141,13 @@ def clean_hindi(text):
     return text
 
 def parse_questions(text, language="en"):
+    """
+    Parses raw OCR text into structured questions.
+    Handles question numbers starting from 1, 2, 3...
+    Also handles multi-line questions before options.
+    """
     questions = []
+
     if language == "hi":
         text = re.sub(r"\(6\)",   "(A)", text)
         text = re.sub(r"\(8\)\.", "(B)", text)
@@ -149,46 +155,70 @@ def parse_questions(text, language="en"):
         text = re.sub(r"\(0\)\.", "(C)", text)
         text = re.sub(r"\(0\)",   "(C)", text)
         text = re.sub(r"_#",      "(A)", text)
+        text = re.sub(r"\(©\)",   "(C)", text)
+        text = re.sub(r"\(o\)",   "(C)", text)
 
+    # Normalize option labels spacing
+    text = re.sub(r"\(([A-Da-d])\)", r"(\1) ", text)
+
+    # Split into blocks at question numbers like 1. 2. 3. 32. 33.
     blocks = re.split(r"\n(?=\d{1,3}[\.\)]\s)", text.strip())
+
     for block in blocks:
         lines = [l.strip() for l in block.splitlines() if l.strip()]
         if len(lines) < 2:
             continue
+
+        # Match question number at start like "1." or "32."
         num_match = re.match(r"^(\d{1,3})[\.\)]\s*(.*)", lines[0])
         if not num_match:
             continue
+
         q_num = int(num_match.group(1))
         if q_num > 200:
             continue
+
         question_text = num_match.group(2).strip()
         options = {}
 
         for line in lines[1:]:
-            opt = re.match(r"^\(?([A-Da-d])\)?[\.\)\s]\s*(.+)", line)
+            # Match options in all common formats
+            opt = re.match(
+                r"^\(?([A-Da-d])\)?\s*[\.\)]?\s*(.+)", line
+            )
             if opt:
                 label = opt.group(1).upper()
                 val   = opt.group(2).strip()
-                val   = clean_hindi(val) if language == "hi" else clean_english(val)
+                # Remove trailing option labels accidentally included
+                val = re.sub(r"\s*\([A-D]\)\s*$", "", val).strip()
+                if language == "hi":
+                    val = clean_hindi(val)
+                else:
+                    val = clean_english(val)
                 if val and label in ["A","B","C","D"]:
                     options[label] = val
             else:
+                # Continuation of question text before options start
                 if not options and line:
                     question_text += " " + line
 
+        # Clean question text
         if language == "hi":
             question_text = clean_hindi(question_text)
         else:
             question_text = clean_english(question_text)
 
-        question_text = re.sub(r"^\d+\s*", "", question_text).strip()
+        # Remove leading number if accidentally included
+        question_text = re.sub(r"^\d+[\.\)]\s*", "", question_text).strip()
 
+        # Only save if we have at least 2 options and valid question
         if len(options) >= 2 and len(question_text) > 5:
             questions.append({
                 "q_num":    q_num,
                 "question": question_text,
                 "options":  options
             })
+
     return questions
 
 def pair_and_translate(en_list, hi_list):
@@ -675,6 +705,32 @@ def submit():
         "results":    results
     })
 
+@app.route("/debug_ocr", methods=["POST"])
+def debug_ocr():
+    """Debug route to see raw OCR output."""
+    try:
+        file = request.files.get("file")
+        if not file:
+            return jsonify({"error": "No file"}), 400
+        os.makedirs("uploads", exist_ok=True)
+        filepath = os.path.join("uploads", file.filename)
+        file.save(filepath)
+        left_path, right_path = split_image(filepath)
+        en_text = extract_text_from_image(left_path, lang="eng")
+        hi_text = extract_text_from_image(right_path, lang="hin")
+        en_questions = parse_questions(en_text, language="en")
+        hi_questions = parse_questions(hi_text, language="hi")
+        return jsonify({
+            "en_raw": en_text,
+            "hi_raw": hi_text,
+            "en_questions_found": len(en_questions),
+            "hi_questions_found": len(hi_questions),
+            "en_questions": en_questions,
+            "hi_questions": hi_questions
+        })
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+    
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
     threading.Timer(1.5, lambda: webbrowser.open(f"http://localhost:{port}")).start()
