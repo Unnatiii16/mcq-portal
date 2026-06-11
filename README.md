@@ -217,6 +217,17 @@ gunicorn
 
 ---
 
+## First Time Setup
+
+Run this before starting the app for the first time:
+
+python setup.py
+
+Default login:
+Username: admin
+Password: admin123
+
+---
 ## Author
 
 Built by Unnati Sawant
